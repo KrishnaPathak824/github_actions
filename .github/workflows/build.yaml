@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Lint code
+        run: yarn lint
+
       - name: Conventional Commit Lint
         uses: webiny/action-conventional-commits@v1.3.0
         with:
