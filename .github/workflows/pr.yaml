@@ -1,0 +1,19 @@
+name: Pull Request Check
+
+on:
+  pull_request:
+    branches:
+jobs:
+  pr-check:
+    name: Check PR changes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Display current branch
+        run: echo "Checking PR from ${{ github.head_ref }} to ${{ github.base_ref }}"
+
+      - name: (Optional) Run a basic check
+        run: echo "All good! Add tests or linters here if needed."
