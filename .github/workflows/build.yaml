@@ -26,7 +26,7 @@ jobs:
           context: ./backend1
           file: ./backend1/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/backend1:${{ steps.set-tag.outputs.TAG }}
+          tags: ${{ env.REGISTRY }}/backend1:latest
       - name: Build & push backend2
         uses: docker/build-push-action@v5
         with:
