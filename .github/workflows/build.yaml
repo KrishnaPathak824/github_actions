@@ -1,4 +1,4 @@
-name: Push and Build image
+name: PR check and Build Docker image and Push
 
 on:
   push:
@@ -64,7 +64,7 @@ jobs:
           context: ./backend1
           file: ./backend1/Dockerfile
           push: true
-          tags:
+          tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME_IMAGE_NAME }}:dev-latest
 
@@ -74,7 +74,7 @@ jobs:
           context: ./backend2
           file: ./backend2/Dockerfile
           push: true
-          tags:
+          tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME_IMAGE_NAME }}:dev-latest
 
@@ -84,7 +84,7 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags:
+          tags: |
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME_IMAGE_NAME }}:dev-latest
 
@@ -94,7 +94,7 @@ jobs:
           context: ./database
           file: ./database/Dockerfile
           push: true
-          tags:
+          tags: |
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-latest
 
