@@ -63,7 +63,7 @@ jobs:
         if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
         with:
-          context: ./backend1
+          context: .
           file: ./backend1/Dockerfile
           push: true
           tags: |
@@ -74,7 +74,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
         with:
-          context: ./backend1
+          context: .
           file: ./backend1/Dockerfile
           push: true
           tags: |
@@ -86,7 +86,7 @@ jobs:
         uses: docker/build-push-action@v5
 
         with:
-          context: ./backend2
+          context: .
           file: ./backend2/Dockerfile
           push: true
           tags: |
@@ -98,7 +98,7 @@ jobs:
         uses: docker/build-push-action@v5
 
         with:
-          context: ./backend2
+          context: .
           file: ./backend2/Dockerfile
           push: true
           tags: |
@@ -114,7 +114,7 @@ jobs:
         if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend
+          context: .
           file: ./frontend/Dockerfile
           push: true
           tags: |
@@ -125,7 +125,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend
+          context: .
           file: ./frontend/Dockerfile
           push: true
           tags: |
@@ -134,14 +134,14 @@ jobs:
 
   database:
     if: github.event_name == 'push'
-    name: Frontend build and push
+    name: Database build and push
     runs-on: [frontend]
     steps:
       - name: Build & push database
         if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
         with:
-          context: ./database
+          context: .
           file: ./database/Dockerfile
           push: true
           tags: |
@@ -152,7 +152,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
         with:
-          context: ./database
+          context: .
           file: ./database/Dockerfile
           push: true
           tags: |
