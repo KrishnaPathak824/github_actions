@@ -10,7 +10,7 @@ on:
       - dev
 
 env:
-  REGISTRY: docker.io
+  REGISTRY: jhinga
   FRONTEND_IMAGE_NAME: jhinga/frontend
   BACKEND1_IMAGE_NAME: jhinga/backend1
   BACKEND2_IMAGE_NAME: jhinga/backend2
@@ -18,7 +18,7 @@ env:
 
 jobs:
   pr-check:
-    if: github.event_name == 'pull_request' && github.head_ref == 'feature' && github.base.ref == 'dev'
+    if: github.event_name == 'pull_request' && startswith(github.head_ref == 'feature') && github.base.ref == 'dev'
     name: Check PR changes
     runs-on: ubuntu-latest
 
