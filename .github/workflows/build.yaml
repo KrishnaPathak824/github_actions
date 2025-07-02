@@ -11,10 +11,10 @@ on:
 
 env:
   REGISTRY: jhinga
-  FRONTEND_IMAGE_NAME: jhinga/frontend
-  BACKEND1_IMAGE_NAME: jhinga/backend1
-  BACKEND2_IMAGE_NAME: jhinga/backend2
-  DATABASE_IMAGE_NAME: jhinga/database
+  FRONTEND_IMAGE_NAME: frontend
+  BACKEND1_IMAGE_NAME: backend1
+  BACKEND2_IMAGE_NAME: backend2
+  DATABASE_IMAGE_NAME: database
 
 jobs:
   pr-check:
