@@ -18,11 +18,19 @@ env:
 
 jobs:
   pr-check:
-    if: github.event_name == 'pull_request' && (github.head_ref == 'feature' || startsWith(github.head_ref, 'feature/')) && github.base.ref == 'dev'
+    if: github.event_name == 'pull_request' && github.base.ref == 'dev'
     name: Check PR changes
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check if PR is from a feature branch
+        run: |
+          echo "Head ref is: ${{ github.head_ref }}"
+          if [[ "${{ github.head_ref }}" != feature* ]]; then
+            echo "Not a feature branch. Skipping checks."
+            exit 1
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -66,7 +74,7 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME_IMAGE_NAME }}:dev-latest
+            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-latest
 
       - name: Build & push backend2
         uses: docker/build-push-action@v5
@@ -76,7 +84,7 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME_IMAGE_NAME }}:dev-latest
+            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-latest
 
       - name: Build & push frontend
         uses: docker/build-push-action@v5
@@ -86,7 +94,7 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME_IMAGE_NAME }}:dev-latest
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-latest
 
       - name: Build & push database
         uses: docker/build-push-action@v5
