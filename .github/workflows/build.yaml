@@ -42,9 +42,10 @@ jobs:
       - name: Display current branch
         run: echo "Checking PR from ${{ github.head_ref }} to ${{ github.base_ref }}"
 
-  docker:
+  backend:
     if: github.event_name == 'push'
-    runs-on: ubuntu-latest
+    name: Backend Build and push
+    runs-on: [backend]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -93,7 +94,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:latest
 
       - name: Build & push backend2
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
 
         with:
@@ -104,6 +105,11 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-latest
 
+  frontend:
+    if: github.event_name == 'push'
+    name: Frontend build and push
+    runs-on: [frontend]
+    steps:
       - name: Build & push frontend
         if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
@@ -126,6 +132,11 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:prod-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
 
+  database:
+    if: github.event_name == 'push'
+    name: Frontend build and push
+    runs-on: [frontend]
+    steps:
       - name: Build & push database
         if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
