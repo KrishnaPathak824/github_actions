@@ -10,11 +10,15 @@ on:
       - dev
 
 env:
-  REGISTRY: jhinga
+  REGISTRY: docker.io
+  FRONTEND_IMAGE_NAME: jhinga/frontend
+  BACKEND1_IMAGE_NAME: jhinga/backend1
+  BACKEND2_IMAGE_NAME: jhinga/backend2
+  DATABASE_IMAGE_NAME: jhinga/database
 
 jobs:
   pr-check:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.head_ref == 'feature' && github.base.ref == 'dev'
     name: Check PR changes
     runs-on: ubuntu-latest
 
@@ -40,7 +44,7 @@ jobs:
 
   docker:
     if: github.event_name == 'push'
-    runs-on: [local-runner]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -60,7 +64,9 @@ jobs:
           context: ./backend1
           file: ./backend1/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/backend1:latest
+          tags:
+            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME_IMAGE_NAME }}:dev-latest
 
       - name: Build & push backend2
         uses: docker/build-push-action@v5
@@ -68,7 +74,9 @@ jobs:
           context: ./backend2
           file: ./backend2/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/backend2:latest
+          tags:
+            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME_IMAGE_NAME }}:dev-latest
 
       - name: Build & push frontend
         uses: docker/build-push-action@v5
@@ -76,7 +84,9 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/frontend:latest
+          tags:
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME_IMAGE_NAME }}:dev-latest
 
       - name: Build & push database
         uses: docker/build-push-action@v5
@@ -84,7 +94,9 @@ jobs:
           context: ./database
           file: ./database/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/database:latest
+          tags:
+            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-latest
 
       - name: Complete workflow
         run: echo "Workflow completed"
