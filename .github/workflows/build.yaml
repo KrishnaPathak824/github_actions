@@ -42,10 +42,9 @@ jobs:
       - name: Display current branch
         run: echo "Checking PR from ${{ github.head_ref }} to ${{ github.base_ref }}"
 
-  backend:
+  docker:
     if: github.event_name == 'push'
-    name: Backend Build and push
-    runs-on: [backend]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -70,29 +69,6 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-latest
 
-      - name: Build & push backend1 (main)
-        if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend1
-          file: ./backend1/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:prod-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:latest
-
-      - name: Build & push backend2 (main)
-        if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v5
-
-        with:
-          context: ./backend2
-          file: ./backend2/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:prod-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:latest
-
       - name: Build & push backend2
         if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
@@ -105,23 +81,6 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-latest
 
-  frontend:
-    if: github.event_name == 'push'
-    name: Frontend build and push
-    runs-on: [frontend]
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build & push frontend
         if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
@@ -133,33 +92,6 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-latest
 
-      - name: Build & push frontend (main)
-        if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:prod-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
-
-  database:
-    if: github.event_name == 'push'
-    name: Database build and push
-    runs-on: [frontend]
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build & push database
         if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
@@ -170,17 +102,6 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-latest
-
-      - name: Build & push database(main)
-        if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v5
-        with:
-          context: ./database
-          file: ./database/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:prod-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:prod-latest
 
       - name: Complete workflow
         run: echo "Workflow completed"
