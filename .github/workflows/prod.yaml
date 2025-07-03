@@ -1,0 +1,106 @@
+name: Build Docker image and Push
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+env:
+  REGISTRY: jhinga
+  FRONTEND_IMAGE_NAME: frontend
+  BACKEND1_IMAGE_NAME: backend1
+  BACKEND2_IMAGE_NAME: backend2
+  DATABASE_IMAGE_NAME: database
+
+jobs:
+  release:
+    name: Create Git Tag & Build Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install semver tool
+        run: |
+          sudo curl https://raw.githubusercontent.com/fsaintjacques/semver-tool/3.0.0/src/semver -o /usr/local/bin/semver
+          sudo chmod +x /usr/local/bin/semver
+
+      - name: Get latest tag and bump
+        id: bump
+        run: |
+          git fetch --tags
+          last_tag=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1)
+          echo "Last tag: $last_tag"
+
+          if [[ -z "$last_tag" ]]; then
+            new_version="v1.0.0"
+          else
+            new_version="v$(semver bump patch ${last_tag#v})"
+          fi
+
+          echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
+
+      - name: Create & push Git tag
+        run: |
+          git config user.name "KrishnaPathak824"
+          git config user.email "pathakkrishna824@gmail.com"
+          git tag $NEW_VERSION
+          git push origin $NEW_VERSION
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend1
+          file: ./backend1/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:${{ env.NEW_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:latest
+
+      - name: Build & push backend2 (main)
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v5
+
+        with:
+          context: ./backend2
+          file: ./backend2/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:prod-${{ env.NEW_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:latest
+
+      - name: Build & push frontend (main)
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:prod-${{ env.NEW_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
+
+      - name: Build & push database(main)
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v5
+        with:
+          context: ./database
+          file: ./database/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:prod-${{ env.NEW_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:latest
