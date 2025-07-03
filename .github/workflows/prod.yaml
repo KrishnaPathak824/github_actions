@@ -3,7 +3,6 @@ name: Build Docker image and Push
 on:
   push:
     branches:
-      - dev
       - main
 
 env:
