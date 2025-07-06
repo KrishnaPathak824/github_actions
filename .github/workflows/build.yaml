@@ -46,7 +46,7 @@ jobs:
         id: yarn-cache
         with:
           path: ~/.cache/yarn
-          key: ${{runner.os}}-yarn-${{ hashFiles("**/yarn.lock") }}
+          key: ${{runner.os}}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{runner.os}}-yarn-
 
@@ -71,7 +71,7 @@ jobs:
         id: docker-cache
         with:
           path: /tmp/.buildx-cache
-          key: ${{runner.os}}-multi-buildx-${{ hashFiles("/backend1/Dockerfile") }}
+          key: ${{runner.os}}-multi-buildx-${{ hashFiles('/backend1/Dockerfile') }}
           restore-keys: |
             ${{runner.os}}-multi-buildx-
             ${{runner.os}}-
@@ -110,7 +110,7 @@ jobs:
         id: docker-cache
         with:
           path: /tmp/.buildx-cache
-          key: ${{runner.os}}-multi-buildx-${{ hashFiles("/backend2/Dockerfile") }}
+          key: ${{runner.os}}-multi-buildx-${{ hashFiles('/backend2/Dockerfile') }}
           restore-keys: |
             ${{runner.os}}-multi-buildx-
             ${{runner.os}}-
@@ -145,7 +145,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
-          key: ${{runner.os}}-multi-buildx-${{ hashFiles("/frontend/Dockerfile") }}
+          key: ${{runner.os}}-multi-buildx-${{ hashFiles('/frontend/Dockerfile') }}
           restore-keys: |
             ${{runner.os}}-multi-buildx-
             ${{runner.os}}-
@@ -185,7 +185,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
-          key: ${{runner.os}}-multi-buildx-${{ hashFiles("/database/Dockerfile") }}
+          key: ${{runner.os}}-multi-buildx-${{ hashFiles('/database/Dockerfile') }}
           restore-keys: |
             ${{runner.os}}-multi-buildx-
             ${{runner.os}}-
