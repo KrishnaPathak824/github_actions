@@ -118,7 +118,7 @@ jobs:
   frontend:
     if: github.event_name == 'push'
     name: Frontend build and push
-    runs-on: ubuntu-latest
+    runs-on: [frontend]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
