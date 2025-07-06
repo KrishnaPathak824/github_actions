@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - dev
+    paths:
+      - "frontend/**"
+      - "backend/**"
+
   pull_request:
     branches:
       - dev
@@ -42,7 +46,7 @@ jobs:
         run: echo "Checking PR from ${{ github.head_ref }} to ${{ github.base_ref }}"
 
   backend:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && contains(join(github.event.commits.*.modified, ','), 'backend/')
     name: Backend Build and push
     runs-on: ubuntu-latest
     steps:
@@ -82,7 +86,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-latest
 
   frontend:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && contains(join(github.event.commits.*.modified, ','), 'frontend/')
     name: Frontend build and push
     runs-on: ubuntu-latest
     steps:
