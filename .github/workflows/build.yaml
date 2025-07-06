@@ -146,7 +146,7 @@ jobs:
   database:
     if: github.event_name == 'push'
     name: Database build and push
-    runs-on: [frontend]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
