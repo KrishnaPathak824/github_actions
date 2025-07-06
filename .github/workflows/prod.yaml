@@ -81,7 +81,7 @@ jobs:
           file: ./backend2/Dockerfile
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:prod-${{ env.NEW_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:${{ env.NEW_VERSION }}
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:latest
 
       - name: Build & push frontend (main)
@@ -92,7 +92,7 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:prod-${{ env.NEW_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ env.NEW_VERSION }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
 
       - name: Build & push database(main)
@@ -103,5 +103,5 @@ jobs:
           file: ./database/Dockerfile
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:prod-${{ env.NEW_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:${{ env.NEW_VERSION }}
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:latest

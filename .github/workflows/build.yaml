@@ -44,7 +44,7 @@ jobs:
   backend:
     if: github.event_name == 'push'
     name: Backend Build and push
-    runs-on: [frontend]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -84,7 +84,7 @@ jobs:
   frontend:
     if: github.event_name == 'push'
     name: Frontend build and push
-    runs-on: [frontend]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
