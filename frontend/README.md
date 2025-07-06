@@ -53,4 +53,4 @@ export default tseslint.config({
 });
 ```
 
-# change in md world
+# change in md to check paths ignore
