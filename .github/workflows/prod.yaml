@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "**.md"
+      - "**.json"
 
 env:
   REGISTRY: jhinga
@@ -24,34 +27,34 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Install semver tool
-        run: |
-          sudo curl https://raw.githubusercontent.com/fsaintjacques/semver-tool/3.0.0/src/semver -o /usr/local/bin/semver
-          sudo chmod +x /usr/local/bin/semver
+      # - name: Install semver tool
+      #   run: |
+      #     sudo curl https://raw.githubusercontent.com/fsaintjacques/semver-tool/3.0.0/src/semver -o /usr/local/bin/semver
+      #     sudo chmod +x /usr/local/bin/semver
 
-      - name: Get latest tag and bump
-        id: bump
-        run: |
-          git fetch --tags
-          last_tag=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1)
-          echo "Last tag: $last_tag"
+      # - name: Get latest tag and bump
+      #   id: bump
+      #   run: |
+      #     git fetch --tags
+      #     last_tag=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1)
+      #     echo "Last tag: $last_tag"
 
-          if [[ -z "$last_tag" ]]; then
-            new_version="v1.0.0"
-          else
-            new_version="v$(semver bump patch ${last_tag#v})"
-          fi
+      #     if [[ -z "$last_tag" ]]; then
+      #       new_version="v1.0.0"
+      #     else
+      #       new_version="v$(semver bump patch ${last_tag#v})"
+      #     fi
 
-          echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
-          echo "new_version=$new_version" >> $GITHUB_OUTPUT
+      #     echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
+      #     echo "new_version=$new_version" >> $GITHUB_OUTPUT
 
-      - name: Create & push Git tag
-        run: |
-          git config user.name "KrishnaPathak824"
-          git config user.email "pathakkrishna824@gmail.com"
-          git tag $NEW_VERSION
-          git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }}
-          git push origin $NEW_VERSION
+      # - name: Create & push Git tag
+      #   run: |
+      #     git config user.name "KrishnaPathak824"
+      #     git config user.email "pathakkrishna824@gmail.com"
+      #     git tag $NEW_VERSION
+      #     git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }}
+      #     git push origin $NEW_VERSION
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
