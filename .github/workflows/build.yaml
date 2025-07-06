@@ -43,7 +43,6 @@ jobs:
 
       - name: Display current branch
         run: echo "Checking PR from ${{ github.head_ref }} to ${{ github.base_ref }}"
-
   backend:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
