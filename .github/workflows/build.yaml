@@ -26,7 +26,6 @@ jobs:
     if: github.event_name == 'pull_request'
     name: PR check
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,14 +40,13 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Cache yarn dependencies
+      - name: Cache Yarn dependencies
         uses: actions/cache@v4
-        id: yarn-cache
         with:
           path: ~/.cache/yarn
-          key: ${{runner.os}}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: |
-            ${{runner.os}}-yarn-
+            ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -56,9 +54,29 @@ jobs:
       - name: Display current branch
         run: echo "Checking PR from ${{ github.head_ref }} to ${{ github.base_ref }}"
 
-  backend1:
-    if: github.event_name == 'push'
+  build-and-push:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - name: backend1
+            context: ./backend1
+            dockerfile: ./backend1/Dockerfile
+            image: ${{ env.BACKEND1_IMAGE_NAME }}
+          - name: backend2
+            context: ./backend2
+            dockerfile: ./backend2/Dockerfile
+            image: ${{ env.BACKEND2_IMAGE_NAME }}
+          - name: frontend
+            context: ./frontend
+            dockerfile: ./frontend/Dockerfile
+            image: ${{ env.FRONTEND_IMAGE_NAME }}
+          - name: database
+            context: ./database
+            dockerfile: ./database/Dockerfile
+            image: ${{ env.DATABASE_IMAGE_NAME }}
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -66,165 +84,24 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Buildx cache dir
-        run: mkdir -p /tmp/.buildx-cache
-
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        id: backend1-docker
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{runner.os}}-multi-buildx-${{ hashFiles('/backend1/Dockerfile') }}
-          restore-keys: |
-            ${{runner.os}}-multi-buildx-
-            ${{runner.os}}-
-
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build & push backend1
-        if: github.ref == 'refs/heads/dev'
+      - name: Build & push ${{ matrix.service.name }}
         uses: docker/build-push-action@v5
         with:
-          context: ./backend1
-          file: ./backend1/Dockerfile
+          context: ${{ matrix.service.context }}
+          file: ${{ matrix.service.dockerfile }}
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
-
-  backend2:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Buildx cache dir
-        run: mkdir -p /tmp/.buildx-cache
-
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        id: backend2-docker
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{runner.os}}-multi-buildx-${{ hashFiles('/backend2/Dockerfile') }}
-          restore-keys: |
-            ${{runner.os}}-multi-buildx-
-            ${{runner.os}}-
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build & push backend2
-        if: github.ref == 'refs/heads/dev'
-        uses: docker/build-push-action@v5
-
-        with:
-          context: ./backend2
-          file: ./backend2/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
-
-  frontend:
-    if: github.event_name == 'push'
-    name: Frontend build and push
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Buildx cache dir
-        run: mkdir -p /tmp/.buildx-cache
-
-      - name: Cache Docker layers
-        id: frontend-docker
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{runner.os}}-multi-buildx-${{ hashFiles('/frontend/Dockerfile') }}
-          restore-keys: |
-            ${{runner.os}}-multi-buildx-
-            ${{runner.os}}-
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build & push frontend
-        if: github.ref == 'refs/heads/dev'
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
-
-  database:
-    if: github.event_name == 'push'
-    name: Database build and push
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Buildx cache dir
-        run: mkdir -p /tmp/.buildx-cache
-
-      - name: Cache Docker layers
-        id: database-docker
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{runner.os}}-multi-buildx-${{ hashFiles('/database/Dockerfile') }}
-          restore-keys: |
-            ${{runner.os}}-multi-buildx-
-            ${{runner.os}}-
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build & push database
-        if: github.ref == 'refs/heads/dev'
-        uses: docker/build-push-action@v5
-        with:
-          context: ./database
-          file: ./database/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+            ${{ env.REGISTRY }}/${{ matrix.service.image }}:dev-${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ matrix.service.image }}:dev-latest
+          cache-from: type=gha,scope=${{ matrix.service.name }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.service.name }}
 
       - name: Complete workflow
+        if: matrix.service.name == 'database'
         run: echo "Workflow completed"
