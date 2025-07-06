@@ -24,7 +24,7 @@ env:
 jobs:
   pr-check:
     if: github.event_name == 'pull_request'
-    name: Check PR changes
+    name: Check PR to dev
     runs-on: ubuntu-latest
 
     steps:
