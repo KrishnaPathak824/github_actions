@@ -7,6 +7,9 @@ on:
     paths:
       - "frontend/**"
       - "backend/**"
+    paths-ignore:
+      - "**.md"
+      - "**.json"
 
   pull_request:
     branches:
@@ -29,6 +32,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Conventional Commit Lint
+        uses: webiny/action-conventional-commits@1.3.0
+        with:
+          allowed-commit-types: "feat,fix,docs,style,refactor,test,chore,ci,perf,revert"
+
       - name: Setup Node.js 18
         uses: actions/setup-node@v4
         with:
@@ -37,19 +45,16 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Conventional Commit Lint
-        uses: webiny/action-conventional-commits@v1.3.0
-        with:
-          allowed-commit-types: "feat,fix,docs,style,refactor,test,chore,ci,perf,revert"
-
       - name: Display current branch
         run: echo "Checking PR from ${{ github.head_ref }} to ${{ github.base_ref }}"
 
   backend:
-    if: github.event_name == 'push' && contains(join(github.event.commits.*.modified, ','), 'backend/')
-    name: Backend Build and push
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
+      - name: Ignore changes
+        uses: git update-index --assume-unchanged README.md
+
       - name: Checkout repo
         uses: actions/checkout@v4
 
@@ -86,7 +91,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-latest
 
   frontend:
-    if: github.event_name == 'push' && contains(join(github.event.commits.*.modified, ','), 'frontend/')
+    if: github.event_name == 'push'
     name: Frontend build and push
     runs-on: ubuntu-latest
     steps:
