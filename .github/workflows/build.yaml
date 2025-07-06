@@ -66,6 +66,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Buildx cache dir
+        run: mkdir -p /tmp/.buildx-cache
+
       - name: Cache Docker layers
         uses: actions/cache@v4
         id: backend1-docker
@@ -104,6 +107,9 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Buildx cache dir
+        run: mkdir -p /tmp/.buildx-cache
 
       - name: Cache Docker layers
         uses: actions/cache@v4
@@ -146,6 +152,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Buildx cache dir
+        run: mkdir -p /tmp/.buildx-cache
+
       - name: Cache Docker layers
         id: frontend-docker
         uses: actions/cache@v4
@@ -185,6 +194,9 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Buildx cache dir
+        run: mkdir -p /tmp/.buildx-cache
 
       - name: Cache Docker layers
         id: database-docker
