@@ -83,6 +83,8 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
 
       - name: Build & push backend2
         if: github.ref == 'refs/heads/dev'
@@ -95,6 +97,8 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
 
   frontend:
     if: github.event_name == 'push'
@@ -132,6 +136,8 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
 
   database:
     if: github.event_name == 'push'
@@ -168,6 +174,8 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
 
       - name: Complete workflow
         run: echo "Workflow completed"
