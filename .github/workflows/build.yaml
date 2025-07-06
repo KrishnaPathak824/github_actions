@@ -69,29 +69,6 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-latest
 
-      - name: Build & push backend1 (main)
-        if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend1
-          file: ./backend1/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:prod-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:latest
-
-      - name: Build & push backend2 (main)
-        if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v5
-
-        with:
-          context: ./backend2
-          file: ./backend2/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:prod-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:latest
-
       - name: Build & push backend2
         if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
@@ -132,17 +109,6 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-latest
 
-      - name: Build & push frontend (main)
-        if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:prod-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
-
   database:
     if: github.event_name == 'push'
     name: Database build and push
@@ -169,17 +135,6 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-latest
-
-      - name: Build & push database(main)
-        if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v5
-        with:
-          context: ./database
-          file: ./database/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:prod-${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:prod-latest
 
       - name: Complete workflow
         run: echo "Workflow completed"

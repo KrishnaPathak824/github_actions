@@ -61,7 +61,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build & push Docker image
+      - name: Build & push backend1
         uses: docker/build-push-action@v5
         with:
           context: ./backend1
