@@ -46,7 +46,7 @@ jobs:
         id: yarn-cache
         with:
           path: ~/.cache/yarn
-          key: ${{runner.os}}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{runner.os}}-yarn-${{ hashFiles("**/yarn.lock") }}
           restore-keys: |
             ${{runner.os}}-yarn-
 
@@ -56,7 +56,7 @@ jobs:
       - name: Display current branch
         run: echo "Checking PR from ${{ github.head_ref }} to ${{ github.base_ref }}"
 
-  backend:
+  backend1:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
@@ -65,15 +65,13 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        with:
-          install: true
 
       - name: Cache Docker layers
         uses: actions/cache@v4
         id: docker-cache
         with:
           path: /tmp/.buildx-cache
-          key: ${{runner.os}}-multi-buildx-${{github.sha}}
+          key: ${{runner.os}}-multi-buildx-${{ hashFiles("/backend1/Dockerfile") }}
           restore-keys: |
             ${{runner.os}}-multi-buildx-
             ${{runner.os}}-
@@ -96,6 +94,26 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+
+  backend2:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        id: docker-cache
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{runner.os}}-multi-buildx-${{ hashFiles("/backend2/Dockerfile") }}
+          restore-keys: |
+            ${{runner.os}}-multi-buildx-
+            ${{runner.os}}-
 
       - name: Build & push backend2
         if: github.ref == 'refs/heads/dev'
@@ -127,7 +145,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
-          key: ${{runner.os}}-multi-buildx-${{github.sha}}
+          key: ${{runner.os}}-multi-buildx-${{ hashFiles("/frontend/Dockerfile") }}
           restore-keys: |
             ${{runner.os}}-multi-buildx-
             ${{runner.os}}-
@@ -167,7 +185,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
-          key: ${{runner.os}}-multi-buildx-${{github.sha}}
+          key: ${{runner.os}}-multi-buildx-${{ hashFiles("/database/Dockerfile") }}
           restore-keys: |
             ${{runner.os}}-multi-buildx-
             ${{runner.os}}-
