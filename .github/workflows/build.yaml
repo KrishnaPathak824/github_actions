@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - dev
-    paths:
-      - "frontend/**"
-      - "backend/**"
     paths-ignore:
       - "**.md"
       - "**.json"
