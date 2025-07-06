@@ -44,7 +44,7 @@ jobs:
   backend:
     if: github.event_name == 'push'
     name: Backend Build and push
-    runs-on: [backend]
+    runs-on: [frontend]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
