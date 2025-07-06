@@ -41,6 +41,9 @@ jobs:
         with:
           node-version: "18"
 
+      - name: Cache yarn dependencies
+        uses: actions/cache
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
@@ -50,6 +53,7 @@ jobs:
   backend:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    name: Backend Build and Push
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
