@@ -1,6 +1,10 @@
-name: Build Docker image and Push
+name: Build Docker image and Push on Main
 
 on:
+  workflow_run:
+    workflows: ["Release"]
+    types:
+      - completed
   push:
     branches:
       - main
@@ -17,6 +21,7 @@ env:
 
 jobs:
   release:
+    if: github.event_name == 'push' || github.event_name == 'workflow_run'
     name: Create Git Tag & Build Docker Image
     runs-on: ubuntu-latest
 
@@ -25,36 +30,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          persist-credentials: false
 
-      # - name: Install semver tool
-      #   run: |
-      #     sudo curl https://raw.githubusercontent.com/fsaintjacques/semver-tool/3.0.0/src/semver -o /usr/local/bin/semver
-      #     sudo chmod +x /usr/local/bin/semver
-
-      # - name: Get latest tag and bump
-      #   id: bump
-      #   run: |
-      #     git fetch --tags
-      #     last_tag=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1)
-      #     echo "Last tag: $last_tag"
-
-      #     if [[ -z "$last_tag" ]]; then
-      #       new_version="v1.0.0"
-      #     else
-      #       new_version="v$(semver bump patch ${last_tag#v})"
-      #     fi
-
-      #     echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
-      #     echo "new_version=$new_version" >> $GITHUB_OUTPUT
-
-      # - name: Create & push Git tag
-      #   run: |
-      #     git config user.name "KrishnaPathak824"
-      #     git config user.email "pathakkrishna824@gmail.com"
-      #     git tag $NEW_VERSION
-      #     git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }}
-      #     git push origin $NEW_VERSION
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          VERSION=$(git describe --tags --abbrev=0)
+          echo "Latest tag is $VERSION"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -72,7 +55,7 @@ jobs:
           file: ./backend1/Dockerfile
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:${{ env.NEW_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:latest
 
       - name: Build & push backend2 (main)
@@ -84,7 +67,7 @@ jobs:
           file: ./backend2/Dockerfile
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:${{ env.NEW_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:latest
 
       - name: Build & push frontend (main)
@@ -95,7 +78,7 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ env.NEW_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
 
       - name: Build & push database(main)
@@ -106,5 +89,5 @@ jobs:
           file: ./database/Dockerfile
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:${{ env.NEW_VERSION }}
+            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:latest
