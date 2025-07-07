@@ -3,15 +3,14 @@ name: Build Docker image and Push
 on:
   workflow_run:
     workflows: ["Release"]
-      types:
-        - completed
+    types:
+      - completed
   push:
     branches:
       - dev
     paths-ignore:
       - "**.md"
       - "**.json"
-
 
 env:
   REGISTRY: jhinga
