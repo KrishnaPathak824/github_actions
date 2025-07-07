@@ -2,7 +2,7 @@ name: Build Docker image and Push on Main
 
 on:
   workflow_run:
-    workflows: ["Release"]
+    workflows: ["Release main"]
     types:
       - completed
   push:
