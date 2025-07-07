@@ -171,6 +171,5 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-latest
           cache-from: type=local,src=/tmp/.buildx-cache-database
           cache-to: type=local,dest=/tmp/.buildx-cache-database,mode=max
-
       - name: Complete workflow
         run: echo "Workflow completed"
