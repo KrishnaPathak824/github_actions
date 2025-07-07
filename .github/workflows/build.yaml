@@ -17,7 +17,6 @@ env:
   DATABASE_IMAGE_NAME: database
 
 jobs:
-
   backend1:
     runs-on: [backend]
     steps:
@@ -53,8 +52,8 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-latest
-          cache-from: type=local,src=/tmp/.buildx-cache-backend1
-          cache-to: type=local,dest=/tmp/.buildx-cache-backend1,mode=max
+          # cache-from: type=local,src=/tmp/.buildx-cache-backend1
+          # cache-to: type=local,dest=/tmp/.buildx-cache-backend1,mode=max
 
   backend2:
     runs-on: [backend]
@@ -92,8 +91,8 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-latest
-          cache-from: type=local,src=/tmp/.buildx-cache-backend2
-          cache-to: type=local,dest=/tmp/.buildx-cache-backend2,mode=max
+          # cache-from: type=local,src=/tmp/.buildx-cache-backend2
+          # cache-to: type=local,dest=/tmp/.buildx-cache-backend2,mode=max
 
   frontend:
     name: Frontend build and push
@@ -131,8 +130,8 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-latest
-          cache-from: type=local,src=/tmp/.buildx-cache-frontend
-          cache-to: type=local,dest=/tmp/.buildx-cache-frontend,mode=max
+          # cache-from: type=local,src=/tmp/.buildx-cache-frontend
+          # cache-to: type=local,dest=/tmp/.buildx-cache-frontend,mode=max
 
   database:
     name: Database build and push
@@ -169,7 +168,7 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:dev-latest
-          cache-from: type=local,src=/tmp/.buildx-cache-database
-          cache-to: type=local,dest=/tmp/.buildx-cache-database,mode=max
+          # cache-from: type=local,src=/tmp/.buildx-cache-database
+          # cache-to: type=local,dest=/tmp/.buildx-cache-database,mode=max
       - name: Complete workflow
         run: echo "Workflow completed"
