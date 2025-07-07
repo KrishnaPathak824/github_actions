@@ -1,3 +1,15 @@
+# [3.0.0-beta.3](https://github.com/KrishnaPathak824/github_actions/compare/v3.0.0-beta.2...v3.0.0-beta.3) (2025-07-07)
+
+
+### Features
+
+* change in workflow ([7256071](https://github.com/KrishnaPathak824/github_actions/commit/7256071138efbd16e2af512ef5194c3acac49837))
+
+
+### BREAKING CHANGES
+
+* Workflow Structure change for build and prod
+
 # [3.0.0-beta.2](https://github.com/KrishnaPathak824/github_actions/compare/v3.0.0-beta.1...v3.0.0-beta.2) (2025-07-07)
 
 
