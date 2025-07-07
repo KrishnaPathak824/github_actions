@@ -1,6 +1,6 @@
 module.exports = {
   branches: [
-    "main",
+    { name: "main" },
     {
       name: "dev",
       channel: "dev",
