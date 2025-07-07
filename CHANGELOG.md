@@ -1,3 +1,19 @@
+# [1.1.0-beta.1](https://github.com/KrishnaPathak824/github_actions/compare/v1.0.0...v1.1.0-beta.1) (2025-07-07)
+
+
+### Features
+
+* change in workflow ([ad40ea1](https://github.com/KrishnaPathak824/github_actions/commit/ad40ea161d76601cfac1a2145858aa5abd218f54))
+
+# [1.0.0-beta.2](https://github.com/KrishnaPathak824/github_actions/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2025-07-07)
+
+
+### Features
+
+* change in workflow ([ad40ea1](https://github.com/KrishnaPathak824/github_actions/commit/ad40ea161d76601cfac1a2145858aa5abd218f54))
+
+# 1.0.0-beta.1 (2025-07-06)
+
 # 1.0.0 (2025-07-06)
 
 
