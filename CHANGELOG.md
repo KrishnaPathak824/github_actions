@@ -1,4 +1,14 @@
+# [2.0.0-beta.2](https://github.com/KrishnaPathak824/github_actions/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2025-07-07)
 
+
+### Features
+
+* change in workflow ([17ea513](https://github.com/KrishnaPathak824/github_actions/commit/17ea513af653872332d61ce7e648e13f73cdebdc))
+
+
+### BREAKING CHANGES
+
+* Workflow Structure change
 
 # [1.1.0-beta.1](https://github.com/KrishnaPathak824/github_actions/compare/v1.0.0...v1.1.0-beta.1) (2025-07-07)
 
