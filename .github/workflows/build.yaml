@@ -20,8 +20,9 @@ env:
   DATABASE_IMAGE_NAME: database
 
 jobs:
+
   backend1:
-    if: github.event_name == 'push' || github.event_name == 'workflow_run'
+    if: github.event_name == 'push'
     runs-on: [backend]
     steps:
       - name: Checkout repo
@@ -61,6 +62,8 @@ jobs:
 
   backend2:
     if: github.event_name == 'push' || github.event_name == 'workflow_run'
+
+
     runs-on: [backend]
     steps:
       - name: Checkout repo
