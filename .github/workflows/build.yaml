@@ -2,12 +2,9 @@ name: Build Docker image and Push
 
 on:
   workflow_run:
-    workflows: ["Release"]
+    workflows: ["Release-dev"]
     types:
       - completed
-  push:
-    branches:
-      - dev
     paths-ignore:
       - "**.md"
       - "**.json"
@@ -22,7 +19,7 @@ env:
 jobs:
 
   backend1:
-    if: github.event_name == 'push'
+    if: github.event.workflow_run.head_branch == 'dev'
     runs-on: [backend]
     steps:
       - name: Checkout repo
@@ -61,9 +58,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache-backend1,mode=max
 
   backend2:
-    if: github.event_name == 'push' || github.event_name == 'workflow_run'
-
-
+    if: github.event.workflow_run.head_branch == 'dev'
     runs-on: [backend]
     steps:
       - name: Checkout repo
@@ -103,7 +98,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache-backend2,mode=max
 
   frontend:
-    if: github.event_name == 'push' || github.event_name == 'workflow_run'
+    if: github.event.workflow_run.head_branch == 'dev'
     name: Frontend build and push
     runs-on: [frontend]
     steps:
@@ -143,7 +138,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache-frontend,mode=max
 
   database:
-    if: github.event_name == 'push' || github.event_name == 'workflow_run'
+    if: github.event.workflow_run.head_branch == 'dev'
     name: Database build and push
     runs-on: [frontend]
     steps:
