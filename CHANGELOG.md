@@ -1,4 +1,19 @@
+# [4.0.0-beta.1](https://github.com/KrishnaPathak824/github_actions/compare/v3.0.0...v4.0.0-beta.1) (2025-07-07)
 
+
+### Features
+
+* change in workflow ([61ad512](https://github.com/KrishnaPathak824/github_actions/commit/61ad512f932bd29fc3172b77b6fd7a4b166d8ffb))
+* change in workflow ([7256071](https://github.com/KrishnaPathak824/github_actions/commit/7256071138efbd16e2af512ef5194c3acac49837))
+* change in workflow ([818b12e](https://github.com/KrishnaPathak824/github_actions/commit/818b12edf518751c0452b51240b7cf1af0c7beba))
+* change in workflow ([3ccd252](https://github.com/KrishnaPathak824/github_actions/commit/3ccd2523b2b7955375f903eda648d60349be15c1))
+
+
+### BREAKING CHANGES
+
+* Workflow Structure change for build and prod
+* Workflow Structure change for build and prod
+* Workflow Structure change for build and prod
 
 # [3.0.0-beta.1](https://github.com/KrishnaPathak824/github_actions/compare/v2.0.0...v3.0.0-beta.1) (2025-07-07)
 
