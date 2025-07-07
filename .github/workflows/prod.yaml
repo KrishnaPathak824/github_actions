@@ -2,12 +2,9 @@ name: Build Docker image and Push on Main
 
 on:
   workflow_run:
-    workflows: ["Release main"]
+    workflows: ["Release-main"]
     types:
       - completed
-  push:
-    branches:
-      - main
     paths-ignore:
       - "**.md"
       - "**.json"
