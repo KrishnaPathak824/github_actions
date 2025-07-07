@@ -18,7 +18,7 @@ env:
 
 jobs:
   backend1:
-    runs-on: [backend]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -55,7 +55,7 @@ jobs:
           # cache-to: type=local,dest=/tmp/.buildx-cache-backend1,mode=max
 
   backend2:
-    runs-on: [backend]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -94,7 +94,7 @@ jobs:
 
   frontend:
     name: Frontend build and push
-    runs-on: [frontend]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -132,7 +132,7 @@ jobs:
 
   database:
     name: Database build and push
-    runs-on: [frontend]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
