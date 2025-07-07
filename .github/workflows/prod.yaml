@@ -55,6 +55,20 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:latest
 
+      - name: Save and compress backend2 Docker image
+        run: |
+          rm -f backend2.tar.gz || true
+          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-backend2:${{ env.TAG_SUFFIX }} | gzip > backend2.tar.gz
+        continue-on-error: true
+
+      - name: Upload backend2 image tar
+        uses: actions/upload-artifact@v4
+        if: success() && hashFiles('backend2.tar.gz') != ''
+        with:
+          name: backend2-image-${{ github.run_id }}-${{ github.run_attempt }}
+          path: backend2.tar.gz
+          retention-days: 7
+
       - name: Build & push backend2 (main)
         uses: docker/build-push-action@v5
 
