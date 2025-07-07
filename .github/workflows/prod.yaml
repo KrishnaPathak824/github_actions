@@ -56,7 +56,6 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:latest
 
       - name: Build & push backend2 (main)
-        if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
 
         with:
@@ -82,7 +81,6 @@ jobs:
           retention-days: 7
 
       - name: Build & push frontend (main)
-        if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
@@ -107,7 +105,6 @@ jobs:
           retention-days: 7
 
       - name: Build & push database(main)
-        if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
         with:
           context: ./database
