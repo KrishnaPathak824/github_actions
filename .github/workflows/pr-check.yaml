@@ -1,0 +1,35 @@
+name: PR-check on Dev
+
+on:
+  pull_request:
+    branches:
+      - dev
+    paths-ignore:
+      - "**.md"
+      - "**.json"
+
+jobs:
+  pr-check:
+    if: github.event_name == 'pull_request'
+    name: PR check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Conventional Commit Lint
+        uses: webiny/action-conventional-commits@v1.3.0
+        with:
+          allowed-commit-types: "feat,fix,docs,style,refactor,test,chore,ci,perf,revert"
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Display current branch
+        run: echo "Checking PR from ${{ github.head_ref }} to ${{ github.base_ref }}"
