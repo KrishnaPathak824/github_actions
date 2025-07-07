@@ -55,18 +55,18 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:latest
 
-      - name: Save and compress backend2 Docker image
+      - name: Save and compress backend1 Docker image
         run: |
-          rm -f backend2.tar.gz || true
-          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-backend2:${{ env.TAG_SUFFIX }} | gzip > backend2.tar.gz
+          rm -f backend1.tar.gz || true
+          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-backend1:${{ steps.get_tag.outputs.version }} | gzip > backend1.tar.gz
         continue-on-error: true
 
-      - name: Upload backend2 image tar
+      - name: Upload backend1 image tar
         uses: actions/upload-artifact@v4
-        if: success() && hashFiles('backend2.tar.gz') != ''
+        if: success() && hashFiles('backend1.tar.gz') != ''
         with:
-          name: backend2-image-${{ github.run_id }}-${{ github.run_attempt }}
-          path: backend2.tar.gz
+          name: backend1-image-${{ github.run_id }}-${{ github.run_attempt }}
+          path: backend1.tar.gz
           retention-days: 7
 
       - name: Build & push backend2 (main)
@@ -83,7 +83,7 @@ jobs:
       - name: Save and compress backend2 Docker image
         run: |
           rm -f backend2.tar.gz || true
-          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-backend2:${{ env.TAG_SUFFIX }} | gzip > backend2.tar.gz
+          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-backend2:${{ steps.get_tag.outputs.version }} | gzip > backend2.tar.gz
         continue-on-error: true
 
       - name: Upload backend2 image tar
@@ -107,7 +107,7 @@ jobs:
       - name: Save and compress frontend Docker image
         run: |
           rm -f frontend.tar.gz || true
-          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-frontend:${{ env.TAG_SUFFIX }} | gzip > frontend.tar.gz
+          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-frontend:${{ steps.get_tag.outputs.version }} | gzip > frontend.tar.gz
         continue-on-error: true
 
       - name: Upload frontend image tar
