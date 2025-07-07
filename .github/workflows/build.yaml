@@ -43,7 +43,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build & push backend1
-        if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
         with:
           context: ./backend1
@@ -81,7 +80,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build & push backend2
-        if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
 
         with:
@@ -121,7 +119,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build & push frontend
-        if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
@@ -159,7 +156,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build & push database
-        if: github.ref == 'refs/heads/dev'
         uses: docker/build-push-action@v5
         with:
           context: ./database
