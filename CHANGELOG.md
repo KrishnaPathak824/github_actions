@@ -1,3 +1,10 @@
+# [4.0.0-beta.2](https://github.com/KrishnaPathak824/github_actions/compare/v4.0.0-beta.1...v4.0.0-beta.2) (2025-07-07)
+
+
+### Features
+
+* change in workflow ([3cc4794](https://github.com/KrishnaPathak824/github_actions/commit/3cc47947e23a7f2ae204872bdb3e1b49e8f2528a))
+
 # [4.0.0-beta.1](https://github.com/KrishnaPathak824/github_actions/compare/v3.0.0...v4.0.0-beta.1) (2025-07-07)
 
 
