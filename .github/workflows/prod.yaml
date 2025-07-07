@@ -56,7 +56,6 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:latest
 
       - name: Build & push backend2 (main)
-        if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
 
         with:
@@ -67,8 +66,21 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:latest
 
+      - name: Save and compress backend2 Docker image
+        run: |
+          rm -f backend2.tar.gz || true
+          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-backend2:${{ env.TAG_SUFFIX }} | gzip > backend2.tar.gz
+        continue-on-error: true
+
+      - name: Upload backend2 image tar
+        uses: actions/upload-artifact@v4
+        if: success() && hashFiles('backend2.tar.gz') != ''
+        with:
+          name: backend2-image-${{ github.run_id }}-${{ github.run_attempt }}
+          path: backend2.tar.gz
+          retention-days: 7
+
       - name: Build & push frontend (main)
-        if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
@@ -78,8 +90,21 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
 
+      - name: Save and compress frontend Docker image
+        run: |
+          rm -f frontend.tar.gz || true
+          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-frontend:${{ env.TAG_SUFFIX }} | gzip > frontend.tar.gz
+        continue-on-error: true
+
+      - name: Upload frontend image tar
+        uses: actions/upload-artifact@v4
+        if: success() && hashFiles('frontend.tar.gz') != ''
+        with:
+          name: frontend-image-${{ github.run_id }}-${{ github.run_attempt }}
+          path: frontend.tar.gz
+          retention-days: 7
+
       - name: Build & push database(main)
-        if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
         with:
           context: ./database
