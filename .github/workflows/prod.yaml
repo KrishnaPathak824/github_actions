@@ -31,6 +31,8 @@ jobs:
 
       - name: Install frontend dependencies and build static site
         working-directory: frontend
+        env:
+          VITE_BASE_PATH: /github_actions/frontend/
         run: |
           yarn install --frozen-lockfile
           yarn build
