@@ -1,3 +1,10 @@
+# [4.7.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.6.0...v4.7.0) (2025-07-08)
+
+
+### Features
+
+* workflow change in the prod ([2a2f40e](https://github.com/KrishnaPathak824/github_actions/commit/2a2f40e8d5b5d49efc8589e6ff08791e953208d1))
+
 # [4.6.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.5.0...v4.6.0) (2025-07-08)
 
 
