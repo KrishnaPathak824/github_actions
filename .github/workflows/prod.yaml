@@ -1,4 +1,7 @@
 name: Build Docker image and Push on Main
+permissions:
+  contents: write
+  issues: write
 
 on:
   workflow_run:
@@ -17,9 +20,67 @@ env:
   DATABASE_IMAGE_NAME: database
 
 jobs:
-  release:
+  build-and-push-frontend:
     if: github.event_name == 'push' || github.event_name == 'workflow_run'
-    name: Create Git Tag & Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install frontend dependencies and build static site
+        working-directory: frontend
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
+
+      - name: Upload frontend static hashFiles
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist
+
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          VERSION=$(git describe --tags --abbrev=0)
+          echo "Latest tag is $VERSION"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push frontend (main)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
+
+      - name: Save and compress frontend Docker image
+        run: |
+          rm -f frontend.tar.gz || true
+          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-frontend:${{ steps.get_tag.outputs.version }} | gzip > frontend.tar.gz
+        continue-on-error: true
+
+      - name: Upload frontend image tar
+        uses: actions/upload-artifact@v4
+        if: success() && hashFiles('frontend.tar.gz') != ''
+        with:
+          name: frontend-image-${{ github.run_id }}-${{ github.run_attempt }}
+          path: frontend.tar.gz
+          retention-days: 7
+
+  build-and-push-backend1:
+    if: github.event_name == 'push' || github.event_name == 'workflow_run'
     runs-on: ubuntu-latest
 
     steps:
@@ -35,9 +96,6 @@ jobs:
           VERSION=$(git describe --tags --abbrev=0)
           echo "Latest tag is $VERSION"
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -55,23 +113,45 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:latest
 
-      - name: Save and compress backend2 Docker image
+      - name: Save and compress backend1 Docker image
         run: |
-          rm -f backend2.tar.gz || true
-          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-backend2:${{ env.TAG_SUFFIX }} | gzip > backend2.tar.gz
+          rm -f backend1.tar.gz || true
+          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-backend1:${{ steps.get_tag.outputs.version }} | gzip > backend1.tar.gz
         continue-on-error: true
 
-      - name: Upload backend2 image tar
+      - name: Upload backend1 image tar
         uses: actions/upload-artifact@v4
-        if: success() && hashFiles('backend2.tar.gz') != ''
+        if: success() && hashFiles('backend1.tar.gz') != ''
         with:
-          name: backend2-image-${{ github.run_id }}-${{ github.run_attempt }}
-          path: backend2.tar.gz
+          name: backend1-image-${{ github.run_id }}-${{ github.run_attempt }}
+          path: backend1.tar.gz
           retention-days: 7
 
-      - name: Build & push backend2 (main)
-        uses: docker/build-push-action@v5
+  build-and-push-backend2:
+    if: github.event_name == 'push' || github.event_name == 'workflow_run'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          VERSION=$(git describe --tags --abbrev=0)
+          echo "Latest tag is $VERSION"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push backend1 (main)
+        uses: docker/build-push-action@v5
         with:
           context: ./backend2
           file: ./backend2/Dockerfile
@@ -83,7 +163,7 @@ jobs:
       - name: Save and compress backend2 Docker image
         run: |
           rm -f backend2.tar.gz || true
-          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-backend2:${{ env.TAG_SUFFIX }} | gzip > backend2.tar.gz
+          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-backend2:${{ steps.get_tag.outputs.version }} | gzip > backend2.tar.gz
         continue-on-error: true
 
       - name: Upload backend2 image tar
@@ -94,36 +174,46 @@ jobs:
           path: backend2.tar.gz
           retention-days: 7
 
-      - name: Build & push frontend (main)
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
-            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
+  deploy:
+    if: github.event_name == 'push' || github.event_name == 'workflow_run'
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-push-frontend
 
-      - name: Save and compress frontend Docker image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download static file
+        uses: action/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist
+
+      - name: Copy frontend build to gh-pages
         run: |
-          rm -f frontend.tar.gz || true
-          docker save ${{ secrets.DOCKERHUB_USERNAME }}/fellowship-frontend:${{ env.TAG_SUFFIX }} | gzip > frontend.tar.gz
-        continue-on-error: true
+          mkdir -p gh-pages/frontend
+          cp -r frontend/dist/* gh-pages/frontend/
 
-      - name: Upload frontend image tar
-        uses: actions/upload-artifact@v4
-        if: success() && hashFiles('frontend.tar.gz') != ''
-        with:
-          name: frontend-image-${{ github.run_id }}-${{ github.run_attempt }}
-          path: frontend.tar.gz
-          retention-days: 7
+      - name: Push static file to static branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin static || true
+          git switch static || git switch --orphan static
+          rm -rf frontend
+          mkdir -p frontend
+          cp -r gh-pages/frontend/* frontend/
+          git add frontend
+          git commit -m "feat: publish frontend build on reports branch at ${{ github.sha }}" || echo "No changes"
+          git push origin reports
 
-      - name: Build & push database(main)
-        uses: docker/build-push-action@v5
-        with:
-          context: ./database
-          file: ./database/Dockerfile
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
-            ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:latest
+      # - name: Build & push database(main)
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./database
+      #     file: ./database/Dockerfile
+      #     push: true
+      #     tags: |
+      #       ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
+      #       ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:latest
