@@ -206,7 +206,7 @@ jobs:
           cp -r gh-pages/frontend/* frontend/
           git add frontend
           git commit -m "feat: publish frontend build on reports branch at ${{ github.sha }}" || echo "No changes"
-          git push origin reports
+          git push origin static
 
       # - name: Build & push database(main)
       #   uses: docker/build-push-action@v5
