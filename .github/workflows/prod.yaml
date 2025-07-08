@@ -81,6 +81,31 @@ jobs:
           path: frontend.tar.gz
           retention-days: 7
 
+      - name: Manual Trivy Setup
+        uses: aquasecurity/setup-trivy@v0.2.0
+        with:
+          cache: true
+          version: v0.64.1
+
+      - name: Download Trivy HTML template
+        run: |
+          curl -L -o trivy-template.tpl https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: "fs"
+          scan-ref: .
+          format: "template"
+          template: "@trivy-template.tpl"
+          output: "trivy-report.html"
+
+      - name: Upload Trivy report
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-trivy-report
+          path: trivy-report.html
+
   build-and-push-backend1:
     if: github.event_name == 'push' || github.event_name == 'workflow_run'
     runs-on: ubuntu-latest
@@ -197,6 +222,19 @@ jobs:
           mkdir -p gh-pages/frontend
           cp -r frontend/dist/* gh-pages/frontend/
 
+      - name: Download Trivy report (frontend)
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-trivy-report
+          path: ./
+
+      - run: mkdir -p gh-pages/trivy-report
+
+      - name: Copy frontend-trivy-scan to gh-pages
+        run: |
+          mkdir -p gh-pages/trivy-report/frontend
+          cp trivy-report.html gh-pages/trivy-report/frontend/index.html
+
       - name: Push static file to static branch
         run: |
           git config --global user.name "github-actions[bot]"
@@ -208,6 +246,17 @@ jobs:
           cp -r gh-pages/frontend/* frontend/
           git add frontend
           git commit -m "feat: publish frontend build on reports branch at ${{ github.sha }}" || echo "No changes"
+          git push origin static
+
+      - name: Commit and push Trivy reports
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin static || true
+          git switch static || git switch --orphan static
+          cp -r gh-pages/* .
+          git add trivy-report
+          git commit -m "chore: update trivy reports on ${{ github.sha }}" || echo "No changes"
           git push origin static
 
       # - name: Build & push database(main)
