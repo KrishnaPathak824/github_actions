@@ -94,8 +94,8 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          scan-type: "fs"
-          scan-ref: ./frontend
+          scan-type: "image"
+          image-ref: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
           format: "template"
           template: "@trivy-template.tpl"
           output: "frontend-trivy-report.html"
@@ -167,8 +167,8 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          scan-type: "fs"
-          scan-ref: ./backend1
+          scan-type: "image"
+          image-ref: ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:latest
           format: "template"
           template: "@trivy-template.tpl"
           output: "backend1-trivy-report.html"
@@ -239,8 +239,8 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          scan-type: "fs"
-          scan-ref: ./backend2
+          scan-type: "image"
+          scan-ref: ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:latest
           format: "template"
           template: "@trivy-template.tpl"
           output: "backend2-trivy-report.html"
