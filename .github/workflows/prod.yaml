@@ -338,10 +338,8 @@ jobs:
       - github-pages
 
     steps:
-      - name: ssh and deploy
+      - name: SSH and deploy (cleaner)
         run: |
           echo "${{ secrets.SECRET_KEY }}" > sshkey
           chmod 600 sshkey
-          ssh -o StrictHostKeyChecking=no -i './sshkey' ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} <<EOF
-          echo "hello world" >> hello.txt
-          EOF
+          ssh -o StrictHostKeyChecking=no -i ./sshkey ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} 'echo "hello world" >> hello.txt'
