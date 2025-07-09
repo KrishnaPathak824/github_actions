@@ -338,6 +338,6 @@ jobs:
         run: |
           echo "${{ secrets.SECRET_KEY }}" > sshkey
           chmod 600 sshkey
-          ssh -o StrictHostKeyChecking=no -i './sshkey' ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i './sshkey' ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} <<EOF
           echo "hello world" >> hello.txt
           EOF
