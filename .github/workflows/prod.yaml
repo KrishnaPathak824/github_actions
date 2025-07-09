@@ -333,6 +333,10 @@ jobs:
 
   deploy-frontend:
     runs-on: [frontend]
+    depends-on: |
+      - build-and-push-frontend
+      - github-pages
+
     steps:
       - name: ssh and deploy
         run: |
