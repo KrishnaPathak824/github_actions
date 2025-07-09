@@ -1,3 +1,10 @@
+# [4.17.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.16.0...v4.17.0) (2025-07-09)
+
+
+### Features
+
+* created trivy report ([13cc30e](https://github.com/KrishnaPathak824/github_actions/commit/13cc30e236438fed9c8d5cb6a2065716736d4e43))
+
 # [4.16.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.15.0...v4.16.0) (2025-07-09)
 
 
