@@ -333,7 +333,7 @@ jobs:
 
   deploy-frontend:
     runs-on: [frontend]
-    depends-on: |
+    needs: |
       - build-and-push-frontend
       - github-pages
 
