@@ -251,7 +251,7 @@ jobs:
           name: backend2-trivy-report
           path: backend2-trivy-report.html
 
-  deploy-frontend:
+  github-pages:
     if: github.event_name == 'push' || github.event_name == 'workflow_run'
     runs-on: ubuntu-latest
     needs:
@@ -331,12 +331,13 @@ jobs:
           git commit -m "chore: update trivy reports on ${{ github.sha }}" || echo "No changes"
           git push origin static
 
-      # - name: Build & push database(main)
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: ./database
-      #     file: ./database/Dockerfile
-      #     push: true
-      #     tags: |
-      #       ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:${{ steps.get_tag.outputs.version }}
-      #       ${{ env.REGISTRY }}/${{ env.DATABASE_IMAGE_NAME }}:latest
+  deploy-frontend:
+    runs-on: [frontend]
+    steps:
+      - name: ssh and deploy
+        run: |
+          echo "${{ secrets.SECRET_KEY }}" > sshkey
+          chmod 600 sshkey
+          ssh -o StrictHostKeyChecking=no -i './sshkey' ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} << 'EOF'
+          echo "hello world" >> hello.txt
+          EOF
