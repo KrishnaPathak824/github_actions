@@ -332,7 +332,8 @@ jobs:
           git push origin static
 
   deploy-frontend:
-    runs-on: [frontend]
+    if: github.event_name == 'push' || github.event_name == 'workflow_run'
+    runs-on: ubuntu-latest
     needs:
       - build-and-push-frontend
       - github-pages
