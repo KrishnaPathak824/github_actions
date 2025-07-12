@@ -338,8 +338,10 @@ jobs:
       - github-pages
 
     steps:
-      - name: SSH and deploy (cleaner)
+      - name: SSH and deploy
         run: |
           echo "${{ secrets.SECRET_KEY }}" > sshkey
           chmod 600 sshkey
-          ssh -i ./sshkey ${{ secrets.VM_NAME }}@${{ secrets.VM_HOST }} 'echo "hello world" >> hello.txt'
+          ssh -i ./sshkey ${{ secrets.VM_NAME }}@${{ secrets.VM_HOST }} << 'EOF'
+                    docker compose -f /home/krishna/docker-deploy/app.yml --env-file /home/krishna/docker-deploy/.env up -d
+          EOF
