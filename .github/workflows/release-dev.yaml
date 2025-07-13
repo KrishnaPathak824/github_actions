@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - dev
+    paths-ignore:
+      - "**.md"
+      - "**.json"
 
 jobs:
   release:

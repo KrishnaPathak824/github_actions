@@ -7,6 +7,7 @@ import { ClerkProvider, SignedIn, SignedOut, SignInButton } from "@clerk/clerk-r
 import { CssBaseline, ThemeProvider, createTheme, Box, Typography, Button } from "@mui/material";
 
 const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const basename = import.meta.env.VITE_BASE_PATH || "/";
 const theme = createTheme();
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Box sx={{ minHeight: "100vh", width: '100%', bgcolor: "#f5f5f5" }}>
-          <Router>
+          <Router basename={basename}>
             <Routes>
               <Route path="/" element={<Navigate to="/blogs" replace />} />
               <Route path="/blogs" element={<AllBlogs />} />
