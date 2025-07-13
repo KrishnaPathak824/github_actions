@@ -345,5 +345,5 @@ jobs:
           chmod 600 sshkey
           ssh -i ./sshkey ${{ secrets.VM_NAME }}@${{ secrets.VM_HOST }} << 'EOF'
           cd /home/krishna/docker-deploy
-          docker compose -f app.yml --env-file .env up -d
+          docker compose -f app.yaml --env-file .env up -d
           EOF
