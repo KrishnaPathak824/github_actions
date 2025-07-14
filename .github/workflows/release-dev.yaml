@@ -34,12 +34,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: npx semantic-release
-
-      - name: Save commit SHA
-        run: echo "${{ github.sha }}" > sha.txt
-
-      - name: Upload SHA artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sha
-          path: sha.txt
