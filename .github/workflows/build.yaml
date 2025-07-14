@@ -35,7 +35,7 @@ jobs:
       - name: Download base commit artifact
         uses: actions/download-artifact@v4
         with:
-          name: base-commit
+          name: base_commit
           run-id: ${{ github.event.workflow_run.id }}
 
       - name: Read base commit
