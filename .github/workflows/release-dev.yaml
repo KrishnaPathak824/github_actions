@@ -22,15 +22,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Save base commit SHA
-        run: echo "${{ github.sha }}" > base_commit.txt
-
-      - name: Upload base commit as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: base-commit
-          path: base_commit.txt
-
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
@@ -43,3 +34,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: npx semantic-release
+
+      - name: Save commit SHA
+        run: echo "${{ github.sha }}" > sha.txt
+
+      - name: Upload SHA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sha
+          path: sha.txt
