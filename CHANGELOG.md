@@ -1,5 +1,3 @@
-# [4.21.0-beta.1](https://github.com/KrishnaPathak824/github_actions/compare/v4.20.0...v4.21.0-beta.1) (2025-07-14)
-
 
 ### Features
 
