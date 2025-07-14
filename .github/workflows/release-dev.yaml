@@ -22,6 +22,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Save base commit SHA
+        run: echo "${{ github.sha }}" > base_commit.txt
+
+      - name: Upload base commit as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: base-commit
+          path: base_commit.txt
+
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
