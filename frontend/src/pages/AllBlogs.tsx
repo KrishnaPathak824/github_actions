@@ -26,7 +26,7 @@ const AllBlogs: React.FC = () => {
                 <Toolbar>
                     <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 700 }}>
                         <Link to={"/blogs"}>
-                            FellowBlog
+                            FellowBlog1
                         </Link>
                     </Typography>
                     <Button
