@@ -67,9 +67,6 @@ jobs:
           echo "Latest tag is $VERSION"
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -86,8 +83,8 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-latest
-          # cache-from: type=local,src=/tmp/.buildx-cache-backend2
-          # cache-to: type=local,dest=/tmp/.buildx-cache-backend2,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   frontend:
     name: Frontend build and push
@@ -106,9 +103,6 @@ jobs:
           echo "Latest tag is $VERSION"
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -124,5 +118,5 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-${{ steps.get_tag.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-latest
-          # cache-from: type=local,src=/tmp/.buildx-cache-frontend
-          # cache-to: type=local,dest=/tmp/.buildx-cache-frontend,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
