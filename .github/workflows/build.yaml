@@ -17,52 +17,58 @@ env:
   DATABASE_IMAGE_NAME: database
 
 jobs:
-  paths-filter:
+  detect-changes:
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
     outputs:
-      backend1: ${{ steps.filter.outputs.backend1 }}
-      backend2: ${{ steps.filter.outputs.backend2 }}
-      frontend: ${{ steps.filter.outputs.frontend }}
+      backend1: ${{ steps.services.outputs.backend1 }}
+      backend2: ${{ steps.services.outputs.backend2 }}
+      frontend: ${{ steps.services.outputs.frontend }}
 
     steps:
-      - name: Checkout the repo
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Download base commit artifact
+      - name: Download SHA artifact
         uses: actions/download-artifact@v4
         with:
-          name: base-commit
-          run-id: ${{ github.event.workflow_run.id }}
+          name: sha
 
-      - name: Read base commit
-        id: read_base
+      - name: Read base SHA
+        id: sha
         run: |
-          BASE=$(cat base_commit.txt)
-          echo "BASE_SHA=$BASE" >> $GITHUB_ENV
-          echo "base_sha=$BASE" >> $GITHUB_OUTPUT
+          BASE_SHA=$(cat sha.txt)
+          echo "base_sha=$BASE_SHA" >> $GITHUB_OUTPUT
 
-      - name: Detect changed files
-        id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          base: ${{ steps.read_base.outputs.base_sha }}
-          ref: ${{ github.sha }}
-          filters: |
-            backend1:
-              - 'backend1/**'
-            backend2:
-              - 'backend2/**'
-            frontend:
-              - 'frontend/**'
+      - name: Get changed files
+        id: changes
+        run: |
+          git fetch origin
+          git diff --name-only ${{ steps.sha.outputs.base_sha }} HEAD > changed_files.txt
+          cat changed_files.txt
+
+      - name: Determine changed services
+        id: services
+        run: |
+          backend1=false
+          backend2=false
+          frontend=false
+
+          while IFS= read -r file; do
+            [[ "$file" == backend1/* ]] && backend1=true
+            [[ "$file" == backend2/* ]] && backend2=true
+            [[ "$file" == frontend/* ]] && frontend=true
+          done < changed_files.txt
+
+          echo "backend1=$backend1" >> $GITHUB_OUTPUT
+          echo "backend2=$backend2" >> $GITHUB_OUTPUT
+          echo "frontend=$frontend" >> $GITHUB_OUTPUT
 
   backend1:
     runs-on: ubuntu-latest
-    needs: paths-filter
-    if: needs.paths-filter.outputs.backend1 == 'true'
+    needs: detect-changes
+    if: needs.detect-changes.outputs.backend1 == 'true'
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -99,8 +105,8 @@ jobs:
           # cache-to: type=local,dest=/tmp/.buildx-cache-backend1,mode=max
 
   backend2:
-    needs: paths-filter
-    if: needs.paths-filter.outputs.backend2 == 'true'
+    needs: detect-changes
+    if: needs.detect-changes.outputs.backend2 == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -139,8 +145,8 @@ jobs:
           # cache-to: type=local,dest=/tmp/.buildx-cache-backend2,mode=max
 
   frontend:
-    needs: paths-filter
-    if: needs.paths-filter.outputs.frontend == 'true'
+    needs: detect-changes
+    if: needs.detect-changes.outputs.frontend == 'true'
     name: Frontend build and push
     runs-on: ubuntu-latest
     steps:
