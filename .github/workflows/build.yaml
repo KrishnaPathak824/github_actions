@@ -19,6 +19,8 @@ env:
 jobs:
   paths-filter:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
     outputs:
       backend1: ${{ steps.filter.outputs.backend1 }}
       backend2: ${{ steps.filter.outputs.backend2 }}
@@ -34,6 +36,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: base-commit
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Read base commit
         id: read_base
