@@ -1,4 +1,4 @@
-name: Build Docker image and Push (Dev)
+name: Build Docker image and Push to Dev Branch
 
 on:
   workflow_run:
