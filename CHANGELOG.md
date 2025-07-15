@@ -1,10 +1,4 @@
-# [4.22.0-beta.1](https://github.com/KrishnaPathak824/github_actions/compare/v4.21.0...v4.22.0-beta.1) (2025-07-15)
 
-
-### Features
-
-* added hello.txt ([9a17e9d](https://github.com/KrishnaPathak824/github_actions/commit/9a17e9d10253d2f5e55c6097fe0d177726a3e0a0))
-* added hello.txt ([57d13e2](https://github.com/KrishnaPathak824/github_actions/commit/57d13e27f5b6a10aad540e89cd17093436b59e0e))
 
 ### Features
 
