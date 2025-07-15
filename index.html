@@ -3,48 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>View Reports</title>
+  <title>Reports Dashboard</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
       padding: 2rem;
-      background-color: #F9F9F9;
-    }
-    h1 {
       color: #333;
     }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #1a202c;
+    }
+
+    .section {
+      background: #ffffff;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: #2c5282;
+    }
+
     ul {
-      list-style-type: none;
+      list-style: none;
       padding: 0;
+      margin: 0;
     }
+
     li {
-      margin: 1rem 0;
+      margin: 0.75rem 0;
     }
+
     a {
+      color: #3182ce;
       text-decoration: none;
-      color: #007ACC;
-      font-weight: bold;
+      font-weight: 600;
     }
+
     a:hover {
       text-decoration: underline;
-    }
-    h2 {
-      color: #555;
-      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
-  <h1>View Reports</h1>
-  <h2>Trivy Reports</h2>
-  <ul>
-    <li><a href="./trivy-report/backend1/index.html">Backend1 Trivy Report</a></li>
-    <li><a href="./trivy-report/backend2/index.html">Backend2 Trivy Report</a></li>
-    <li><a href="./trivy-report/frontend/index.html">Frontend Trivy Report</a></li>
-  </ul>
-  <h2>Frontend Page</h2>
-  <ul>
-    <li><a href="./frontend/" target="_blank" rel="noopener noreferrer">View Frontend Application</a></li>
-  </ul>
+  <h1>📊 Reports Dashboard</h1>
+
+  <div class="section">
+    <h2>🛡️ Trivy Reports</h2>
+    <ul>
+      <li><a href="./trivy-report/backend1/index.html">Backend1 Trivy Report</a></li>
+      <li><a href="./trivy-report/backend2/index.html">Backend2 Trivy Report</a></li>
+      <li><a href="./trivy-report/frontend/index.html">Frontend Trivy Report</a></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>🌐 Frontend Application</h2>
+    <ul>
+      <li><a href="./frontend/" target="_blank" rel="noopener noreferrer">Launch Frontend App</a></li>
+    </ul>
+  </div>
 </body>
 </html>
