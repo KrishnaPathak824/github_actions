@@ -18,15 +18,17 @@ COPY --from=base /backend1/node_modules ./node_modules
 
 COPY . .
 
+RUN echo "yarn start && yarn migrate" | sudo tee yarn.sh
+RUN chmod +x yarn.sh
 CMD ["sh","yarn.sh"]
 
-# ----- FINAL STAGE: Slim runtime image -----
+# # ----- FINAL STAGE: Slim runtime image -----
 
-FROM node:18-alpine AS production
+# FROM node:18-alpine AS production
 
-WORKDIR /backend1
+# WORKDIR /backend1
 
-RUN rm -rf yarn.sh Dockerfile .dockerignores
+# RUN rm -rf yarn.sh Dockerfile .dockerignores
 
-CMD ["sh","yarn.sh"]
+# CMD ["sh","yarn.sh"]
 
