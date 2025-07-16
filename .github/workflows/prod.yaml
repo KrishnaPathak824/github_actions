@@ -346,7 +346,7 @@ jobs:
           git commit -m "chore: update trivy reports on ${{ github.sha }}" || echo "No changes"
           git push origin static
 
-  deploy-frontend:
+  deploy-application:
     if: github.event_name == 'push' || github.event_name == 'workflow_run'
     runs-on: [frontend]
     needs:
