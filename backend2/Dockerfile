@@ -13,6 +13,8 @@ WORKDIR /backend2
 
 COPY --from=base /backend2/node_modules ./node_modules
 COPY . .
-CMD ["sh","yarn.sh"]
+
+RUN echo "yarn start && yarn migrate" | sudo tee yarn.sh
+# CMD ["sh","yarn.sh"]
 
 

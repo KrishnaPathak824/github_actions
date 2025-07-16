@@ -18,7 +18,9 @@ COPY --from=base /backend1/node_modules ./node_modules
 
 COPY . .
 
-CMD ["sh","yarn.sh"]
+RUN echo "yarn start && yarn migrate" | sudo tee yarn.sh
+
+# CMD ["sh","yarn.sh"]
 
 # # ----- FINAL STAGE: Slim runtime image -----
 
