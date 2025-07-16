@@ -14,7 +14,12 @@ dotenv.config();
 const app: Application = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors(
+  {
+    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    credentials: true, // Allow cookies to be sent
+  }
+));
 
 // Clerk middleware: attaches req.auth to all requests
 app.use(ClerkExpressWithAuth());
