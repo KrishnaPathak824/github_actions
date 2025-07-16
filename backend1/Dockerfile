@@ -20,7 +20,7 @@ COPY . .
 
 RUN echo "yarn start && yarn migrate" | sudo tee yarn.sh
 
-# CMD ["sh","yarn.sh"]
+CMD ["sh","yarn.sh"]
 
 # # ----- FINAL STAGE: Slim runtime image -----
 

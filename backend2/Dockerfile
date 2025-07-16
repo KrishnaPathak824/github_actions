@@ -15,6 +15,6 @@ COPY --from=base /backend2/node_modules ./node_modules
 COPY . .
 
 RUN echo "yarn start && yarn migrate" | sudo tee yarn.sh
-# CMD ["sh","yarn.sh"]
+CMD ["sh","yarn.sh"]
 
 
