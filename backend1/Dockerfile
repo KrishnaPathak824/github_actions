@@ -20,7 +20,7 @@ COPY . .
 
 RUN echo -e '#!/bin/sh\nyarn start && yarn migrate' > yarn.sh
 RUN chmod +x yarn.sh
-CMD ["sh", "yarn.sh"]
+CMD ["sh", "./yarn.sh"]
 
 # # ----- FINAL STAGE: Slim runtime image -----
 
