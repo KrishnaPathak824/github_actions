@@ -1,3 +1,10 @@
+# [4.24.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.23.0...v4.24.0) (2025-07-16)
+
+
+### Features
+
+* script added ([59022d1](https://github.com/KrishnaPathak824/github_actions/commit/59022d13d67623c091d743bff2d006001228ed65))
+
 # [4.23.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.22.0...v4.23.0) (2025-07-15)
 
 
