@@ -1,0 +1,869 @@
+<html><body><h1>Semgrep Results</h1><pre>
+{
+  "version": "1.128.1",
+  "results": [
+    {
+      "check_id": "yaml.github-actions.security.run-shell-injection.run-shell-injection",
+      "path": ".github/workflows/pr-check.yaml",
+      "start": {
+        "line": 35,
+        "col": 9,
+        "offset": 740
+      },
+      "end": {
+        "line": 35,
+        "col": 86,
+        "offset": 817
+      },
+      "extra": {
+        "message": "Using variable interpolation `${{...}}` with `github` context data in a `run:` step could allow an attacker to inject their own code into the runner. This would allow them to steal secrets and code. `github` context data can have arbitrary user input and should be treated as untrusted. Instead, use an intermediate environment variable with `env:` to store the data and use the environment variable in the `run:` script. Be sure to use double-quotes the environment variable, like this: \"$ENVVAR\".",
+        "metadata": {
+          "category": "security",
+          "cwe": [
+            "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+          ],
+          "owasp": [
+            "A01:2017 - Injection",
+            "A03:2021 - Injection"
+          ],
+          "references": [
+            "https://docs.github.com/en/actions/learn-github-actions/security-hardening-for-github-actions#understanding-the-risk-of-script-injections",
+            "https://securitylab.github.com/research/github-actions-untrusted-input/"
+          ],
+          "technology": [
+            "github-actions"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "HIGH",
+          "confidence": "HIGH",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Command Injection"
+          ],
+          "source": "https://semgrep.dev/r/yaml.github-actions.security.run-shell-injection.run-shell-injection",
+          "shortlink": "https://sg.run/pkzk"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "dockerfile.security.missing-user.missing-user",
+      "path": "backend1/Dockerfile",
+      "start": {
+        "line": 17,
+        "col": 1,
+        "offset": 264
+      },
+      "end": {
+        "line": 17,
+        "col": 24,
+        "offset": 287
+      },
+      "extra": {
+        "message": "By not specifying a USER, a program in the container may run as 'root'. This is a security hazard. If an attacker can control a process running as root, they may have control over the container. Ensure that the last USER in a Dockerfile is a USER other than 'root'.",
+        "fix": "USER non-root\nCMD [\"sh\", \"./yarn.sh\"]",
+        "metadata": {
+          "cwe": [
+            "CWE-250: Execution with Unnecessary Privileges"
+          ],
+          "category": "security",
+          "technology": [
+            "dockerfile"
+          ],
+          "confidence": "MEDIUM",
+          "owasp": [
+            "A04:2021 - Insecure Design"
+          ],
+          "references": [
+            "https://owasp.org/Top10/A04_2021-Insecure_Design"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Improper Authorization"
+          ],
+          "source": "https://semgrep.dev/r/dockerfile.security.missing-user.missing-user",
+          "shortlink": "https://sg.run/Gbvn"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "problem-based-packs.insecure-transport.js-node.bypass-tls-verification.bypass-tls-verification",
+      "path": "backend1/src/db/knexfile.ts",
+      "start": {
+        "line": 32,
+        "col": 12,
+        "offset": 768
+      },
+      "end": {
+        "line": 32,
+        "col": 41,
+        "offset": 797
+      },
+      "extra": {
+        "message": "Checks for setting the environment variable NODE_TLS_REJECT_UNAUTHORIZED to 0, which disables TLS verification. This should only be used for debugging purposes. Setting the option rejectUnauthorized to false bypasses verification against the list of trusted CAs, which also leads to insecure transport. These options lead to vulnerability to MTM attacks, and should not be used.",
+        "metadata": {
+          "likelihood": "MEDIUM",
+          "impact": "MEDIUM",
+          "confidence": "MEDIUM",
+          "category": "security",
+          "cwe": "CWE-319: Cleartext Transmission of Sensitive Information",
+          "owasp": "A03:2017 - Sensitive Data Exposure",
+          "references": [
+            "https://nodejs.org/api/https.html#https_https_request_options_callback",
+            "https://stackoverflow.com/questions/20433287/node-js-request-cert-has-expired#answer-29397100"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "technology": [
+            "node.js"
+          ],
+          "vulnerability": "Insecure Transport",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/problem-based-packs.insecure-transport.js-node.bypass-tls-verification.bypass-tls-verification",
+          "shortlink": "https://sg.run/9oxr"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "dockerfile.security.missing-user.missing-user",
+      "path": "backend2/Dockerfile",
+      "start": {
+        "line": 17,
+        "col": 1,
+        "offset": 264
+      },
+      "end": {
+        "line": 17,
+        "col": 24,
+        "offset": 287
+      },
+      "extra": {
+        "message": "By not specifying a USER, a program in the container may run as 'root'. This is a security hazard. If an attacker can control a process running as root, they may have control over the container. Ensure that the last USER in a Dockerfile is a USER other than 'root'.",
+        "fix": "USER non-root\nCMD [\"sh\", \"./yarn.sh\"]",
+        "metadata": {
+          "cwe": [
+            "CWE-250: Execution with Unnecessary Privileges"
+          ],
+          "category": "security",
+          "technology": [
+            "dockerfile"
+          ],
+          "confidence": "MEDIUM",
+          "owasp": [
+            "A04:2021 - Insecure Design"
+          ],
+          "references": [
+            "https://owasp.org/Top10/A04_2021-Insecure_Design"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Improper Authorization"
+          ],
+          "source": "https://semgrep.dev/r/dockerfile.security.missing-user.missing-user",
+          "shortlink": "https://sg.run/Gbvn"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "problem-based-packs.insecure-transport.js-node.bypass-tls-verification.bypass-tls-verification",
+      "path": "backend2/src/db/knexfile.ts",
+      "start": {
+        "line": 33,
+        "col": 12,
+        "offset": 770
+      },
+      "end": {
+        "line": 33,
+        "col": 41,
+        "offset": 799
+      },
+      "extra": {
+        "message": "Checks for setting the environment variable NODE_TLS_REJECT_UNAUTHORIZED to 0, which disables TLS verification. This should only be used for debugging purposes. Setting the option rejectUnauthorized to false bypasses verification against the list of trusted CAs, which also leads to insecure transport. These options lead to vulnerability to MTM attacks, and should not be used.",
+        "metadata": {
+          "likelihood": "MEDIUM",
+          "impact": "MEDIUM",
+          "confidence": "MEDIUM",
+          "category": "security",
+          "cwe": "CWE-319: Cleartext Transmission of Sensitive Information",
+          "owasp": "A03:2017 - Sensitive Data Exposure",
+          "references": [
+            "https://nodejs.org/api/https.html#https_https_request_options_callback",
+            "https://stackoverflow.com/questions/20433287/node-js-request-cert-has-expired#answer-29397100"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "technology": [
+            "node.js"
+          ],
+          "vulnerability": "Insecure Transport",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/problem-based-packs.insecure-transport.js-node.bypass-tls-verification.bypass-tls-verification",
+          "shortlink": "https://sg.run/9oxr"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "dockerfile.security.missing-user.missing-user",
+      "path": "frontend/Dockerfile",
+      "start": {
+        "line": 35,
+        "col": 1,
+        "offset": 479
+      },
+      "end": {
+        "line": 35,
+        "col": 33,
+        "offset": 511
+      },
+      "extra": {
+        "message": "By not specifying a USER, a program in the container may run as 'root'. This is a security hazard. If an attacker can control a process running as root, they may have control over the container. Ensure that the last USER in a Dockerfile is a USER other than 'root'.",
+        "fix": "USER non-root\nCMD [\"nginx\",\"-g\",\"daemon off;\"]",
+        "metadata": {
+          "cwe": [
+            "CWE-250: Execution with Unnecessary Privileges"
+          ],
+          "category": "security",
+          "technology": [
+            "dockerfile"
+          ],
+          "confidence": "MEDIUM",
+          "owasp": [
+            "A04:2021 - Insecure Design"
+          ],
+          "references": [
+            "https://owasp.org/Top10/A04_2021-Insecure_Design"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Improper Authorization"
+          ],
+          "source": "https://semgrep.dev/r/dockerfile.security.missing-user.missing-user",
+          "shortlink": "https://sg.run/Gbvn"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "javascript.browser.security.insecure-document-method.insecure-document-method",
+      "path": "frontend/src/util.tsx",
+      "start": {
+        "line": 28,
+        "col": 5,
+        "offset": 786
+      },
+      "end": {
+        "line": 28,
+        "col": 34,
+        "offset": 815
+      },
+      "extra": {
+        "message": "User controlled data in methods like `innerHTML`, `outerHTML` or `document.write` is an anti-pattern that can lead to XSS vulnerabilities",
+        "metadata": {
+          "cwe": [
+            "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          ],
+          "owasp": [
+            "A07:2017 - Cross-Site Scripting (XSS)",
+            "A03:2021 - Injection"
+          ],
+          "category": "security",
+          "technology": [
+            "browser"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "confidence": "LOW",
+          "references": [
+            "https://owasp.org/Top10/A03_2021-Injection"
+          ],
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cross-Site-Scripting (XSS)"
+          ],
+          "source": "https://semgrep.dev/r/javascript.browser.security.insecure-document-method.insecure-document-method",
+          "shortlink": "https://sg.run/LwA9"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": ".github/workflows/pr-check.yaml",
+            "start": {
+              "line": 35,
+              "col": 39,
+              "offset": 745
+            },
+            "end": {
+              "line": 35,
+              "col": 56,
+              "offset": 762
+            }
+          },
+          {
+            "path": ".github/workflows/pr-check.yaml",
+            "start": {
+              "line": 35,
+              "col": 65,
+              "offset": 745
+            },
+            "end": {
+              "line": 35,
+              "col": 82,
+              "offset": 762
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line .github/workflows/pr-check.yaml:35:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `{ github.head_ref` was unexpected",
+      "path": ".github/workflows/pr-check.yaml",
+      "spans": [
+        {
+          "file": ".github/workflows/pr-check.yaml",
+          "start": {
+            "line": 35,
+            "col": 39,
+            "offset": 745
+          },
+          "end": {
+            "line": 35,
+            "col": 56,
+            "offset": 762
+          }
+        },
+        {
+          "file": ".github/workflows/pr-check.yaml",
+          "start": {
+            "line": 35,
+            "col": 65,
+            "offset": 745
+          },
+          "end": {
+            "line": 35,
+            "col": 82,
+            "offset": 762
+          }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": "Syntax error",
+      "message": "Syntax error at line semgrep-output/report.json:1:\n missing element",
+      "path": "semgrep-output/report.json"
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": ".github/workflows/prod.yaml",
+            "start": {
+              "line": 77,
+              "col": 67,
+              "offset": 2051
+            },
+            "end": {
+              "line": 77,
+              "col": 70,
+              "offset": 2054
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line .github/workflows/prod.yaml:77:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `${{` was unexpected",
+      "path": ".github/workflows/prod.yaml",
+      "spans": [
+        {
+          "file": ".github/workflows/prod.yaml",
+          "start": {
+            "line": 77,
+            "col": 67,
+            "offset": 2051
+          },
+          "end": {
+            "line": 77,
+            "col": 70,
+            "offset": 2054
+          }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": ".github/workflows/prod.yaml",
+            "start": {
+              "line": 155,
+              "col": 67,
+              "offset": 4640
+            },
+            "end": {
+              "line": 155,
+              "col": 70,
+              "offset": 4643
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line .github/workflows/prod.yaml:155:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `${{` was unexpected",
+      "path": ".github/workflows/prod.yaml",
+      "spans": [
+        {
+          "file": ".github/workflows/prod.yaml",
+          "start": {
+            "line": 155,
+            "col": 67,
+            "offset": 4640
+          },
+          "end": {
+            "line": 155,
+            "col": 70,
+            "offset": 4643
+          }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": ".github/workflows/prod.yaml",
+            "start": {
+              "line": 232,
+              "col": 67,
+              "offset": 7228
+            },
+            "end": {
+              "line": 232,
+              "col": 70,
+              "offset": 7231
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line .github/workflows/prod.yaml:232:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `${{` was unexpected",
+      "path": ".github/workflows/prod.yaml",
+      "spans": [
+        {
+          "file": ".github/workflows/prod.yaml",
+          "start": {
+            "line": 232,
+            "col": 67,
+            "offset": 7228
+          },
+          "end": {
+            "line": 232,
+            "col": 70,
+            "offset": 7231
+          }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": ".github/workflows/prod.yaml",
+            "start": {
+              "line": 397,
+              "col": 68,
+              "offset": 12442
+            },
+            "end": {
+              "line": 397,
+              "col": 80,
+              "offset": 12454
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line .github/workflows/prod.yaml:397:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `{ github.sha` was unexpected",
+      "path": ".github/workflows/prod.yaml",
+      "spans": [
+        {
+          "file": ".github/workflows/prod.yaml",
+          "start": {
+            "line": 397,
+            "col": 68,
+            "offset": 12442
+          },
+          "end": {
+            "line": 397,
+            "col": 80,
+            "offset": 12454
+          }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": ".github/workflows/prod.yaml",
+            "start": {
+              "line": 408,
+              "col": 49,
+              "offset": 13027
+            },
+            "end": {
+              "line": 408,
+              "col": 61,
+              "offset": 13039
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line .github/workflows/prod.yaml:408:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `{ github.sha` was unexpected",
+      "path": ".github/workflows/prod.yaml",
+      "spans": [
+        {
+          "file": ".github/workflows/prod.yaml",
+          "start": {
+            "line": 408,
+            "col": 49,
+            "offset": 13027
+          },
+          "end": {
+            "line": 408,
+            "col": 61,
+            "offset": 13039
+          }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": ".github/workflows/prod.yaml",
+            "start": {
+              "line": 419,
+              "col": 50,
+              "offset": 13527
+            },
+            "end": {
+              "line": 419,
+              "col": 62,
+              "offset": 13539
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line .github/workflows/prod.yaml:419:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `{ github.sha` was unexpected",
+      "path": ".github/workflows/prod.yaml",
+      "spans": [
+        {
+          "file": ".github/workflows/prod.yaml",
+          "start": {
+            "line": 419,
+            "col": 50,
+            "offset": 13527
+          },
+          "end": {
+            "line": 419,
+            "col": 62,
+            "offset": 13539
+          }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": ".github/workflows/prod.yaml",
+            "start": {
+              "line": 435,
+              "col": 17,
+              "offset": 14201
+            },
+            "end": {
+              "line": 435,
+              "col": 20,
+              "offset": 14204
+            }
+          },
+          {
+            "path": ".github/workflows/prod.yaml",
+            "start": {
+              "line": 435,
+              "col": 40,
+              "offset": 14201
+            },
+            "end": {
+              "line": 435,
+              "col": 43,
+              "offset": 14204
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line .github/workflows/prod.yaml:435:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `${{` was unexpected",
+      "path": ".github/workflows/prod.yaml",
+      "spans": [
+        {
+          "file": ".github/workflows/prod.yaml",
+          "start": {
+            "line": 435,
+            "col": 17,
+            "offset": 14201
+          },
+          "end": {
+            "line": 435,
+            "col": 20,
+            "offset": 14204
+          }
+        },
+        {
+          "file": ".github/workflows/prod.yaml",
+          "start": {
+            "line": 435,
+            "col": 40,
+            "offset": 14201
+          },
+          "end": {
+            "line": 435,
+            "col": 43,
+            "offset": 14204
+          }
+        }
+      ]
+    }
+  ],
+  "paths": {
+    "scanned": [
+      ".github/workflows/build.yaml",
+      ".github/workflows/pr-check.yaml",
+      ".github/workflows/prod.yaml",
+      ".github/workflows/release-dev.yaml",
+      ".github/workflows/release-main.yaml",
+      "CHANGELOG.md",
+      "README.md",
+      "backend1/.dockerignore",
+      "backend1/.editorconfig",
+      "backend1/.env.example",
+      "backend1/.gitignore",
+      "backend1/Dockerfile",
+      "backend1/README.md",
+      "backend1/hello.txt",
+      "backend1/nodemon.json",
+      "backend1/package.json",
+      "backend1/src/constants/user.ts",
+      "backend1/src/controllers/userController.ts",
+      "backend1/src/db/README.md",
+      "backend1/src/db/knex.ts",
+      "backend1/src/db/knexfile.ts",
+      "backend1/src/db/migrations/20250610165607_create_user_table.ts",
+      "backend1/src/domain/User.ts",
+      "backend1/src/enums/user.ts",
+      "backend1/src/index.ts",
+      "backend1/src/logging/logger.ts",
+      "backend1/src/maps/user.ts",
+      "backend1/src/middlewares/errorHandler.ts",
+      "backend1/src/middlewares/notFound.ts",
+      "backend1/src/middlewares/requestLogger.ts",
+      "backend1/src/models/README.md",
+      "backend1/src/models/UserModel.ts",
+      "backend1/src/routes/index.ts",
+      "backend1/src/routes/userRoutes.ts",
+      "backend1/src/schemas/README.md",
+      "backend1/src/services/userService.ts",
+      "backend1/src/types/README.md",
+      "backend1/src/utils/README.md",
+      "backend1/tsconfig.json",
+      "backend1/tslint.json",
+      "backend1/yarn.lock",
+      "backend1/yarn.sh",
+      "backend2/.dockerignore",
+      "backend2/.editorconfig",
+      "backend2/.env.example",
+      "backend2/.gitignore",
+      "backend2/Dockerfile",
+      "backend2/README.md",
+      "backend2/nodemon.json",
+      "backend2/package.json",
+      "backend2/src/constants/user.ts",
+      "backend2/src/controllers/blogController.ts",
+      "backend2/src/controllers/commentController.ts",
+      "backend2/src/db/README.md",
+      "backend2/src/db/knex.ts",
+      "backend2/src/db/knexfile.ts",
+      "backend2/src/db/migrations/20250610174857_create_blogs_table.ts",
+      "backend2/src/db/migrations/20250610174904_create_comments_table.ts",
+      "backend2/src/domain/Blog.ts",
+      "backend2/src/enums/user.ts",
+      "backend2/src/index.ts",
+      "backend2/src/logging/logger.ts",
+      "backend2/src/maps/user.ts",
+      "backend2/src/middlewares/errorHandler.ts",
+      "backend2/src/middlewares/notFound.ts",
+      "backend2/src/middlewares/requestLogger.ts",
+      "backend2/src/models/BlogModel.ts",
+      "backend2/src/models/CommentModel.ts",
+      "backend2/src/models/README.md",
+      "backend2/src/routes/blogRoutes.ts",
+      "backend2/src/routes/commentRoutes.ts",
+      "backend2/src/routes/index.ts",
+      "backend2/src/schemas/README.md",
+      "backend2/src/services/BlogService.ts",
+      "backend2/src/services/CommentService.ts",
+      "backend2/src/types/README.md",
+      "backend2/src/utils/README.md",
+      "backend2/tsconfig.json",
+      "backend2/tslint.json",
+      "backend2/yarn.lock",
+      "backend2/yarn.sh",
+      "changed.txt",
+      "database/Dockerfile",
+      "frontend/.env",
+      "frontend/.env.example",
+      "frontend/.gitignore",
+      "frontend/Dockerfile",
+      "frontend/README.md",
+      "frontend/eslint.config.js",
+      "frontend/index.html",
+      "frontend/package.json",
+      "frontend/public/vite.svg",
+      "frontend/src/App.css",
+      "frontend/src/App.tsx",
+      "frontend/src/assets/react.svg",
+      "frontend/src/hooks/useBlogData.tsx",
+      "frontend/src/index.css",
+      "frontend/src/main.tsx",
+      "frontend/src/pages/AllBlogs.tsx",
+      "frontend/src/pages/CompleteSignup.tsx",
+      "frontend/src/pages/CreateBlog.tsx",
+      "frontend/src/pages/Editor.tsx",
+      "frontend/src/pages/SingleBlog.tsx",
+      "frontend/src/util.tsx",
+      "frontend/src/vite-env.d.ts",
+      "frontend/tsconfig.app.json",
+      "frontend/tsconfig.json",
+      "frontend/tsconfig.node.json",
+      "frontend/vite.config.ts",
+      "frontend/yarn.lock",
+      "package.json",
+      "release.config.js",
+      "semgrep-output/report.json",
+      "yarn.lock"
+    ]
+  },
+  "time": {
+    "rules": [],
+    "rules_parse_time": 1.7079668045043945,
+    "profiling_times": {
+      "config_time": 5.650131464004517,
+      "core_time": 6.330925464630127,
+      "ignores_time": 0.0019428730010986328,
+      "total_time": 11.983822584152222
+    },
+    "parsing_time": {
+      "total_time": 0.20005416870117188,
+      "per_file_time": {
+        "mean": 0.0026322916934364716,
+        "std_dev": 0.00003283419368753636
+      },
+      "very_slow_files": []
+    },
+    "targets": [],
+    "total_bytes": 0,
+    "max_memory_bytes": 1085045376
+  },
+  "skipped_rules": []
+}
+</pre></body></html>
