@@ -300,7 +300,7 @@ jobs:
           mkdir -p semgrep-output
           xargs semgrep scan --config auto --json > semgrep-output/report.json < changed.txt || true
 
-      - name: Convert Semgrep JSON to HTML (basic)
+      - name: Convert Semgrep JSON to HTML
         if: steps.changed.outputs.found_files == 'true' && hashFiles('semgrep-output/report.json') != ''
         run: |
           mkdir -p semgrep-output
