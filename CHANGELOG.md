@@ -1,3 +1,10 @@
+# [4.26.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.25.0...v4.26.0) (2025-07-20)
+
+
+### Features
+
+* Added semgrep scan ([33ae081](https://github.com/KrishnaPathak824/github_actions/commit/33ae08179ce0a479dd652b569d2ef745c71f6e65))
+
 # [4.25.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.24.0...v4.25.0) (2025-07-20)
 
 
