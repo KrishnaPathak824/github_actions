@@ -291,17 +291,36 @@ jobs:
           echo "Changed files:"
           cat changed.txt
 
+      - name: Get changed files
+        id: changed
+        run: |
+          git fetch origin main
+          CHANGED=$(git diff --name-only origin/main...HEAD | grep -E '\.js$|\.ts$|\.tsx$|\.py$|\.go$|\.java$|\.jsx$|\.c$|\.cpp$' || true)
+          echo "$CHANGED" > changed.txt
+          echo "$CHANGED"
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Run Semgrep on changed files
-        if: success()
+        if: steps.changed.outputs.changed_files != ''
         run: |
           mkdir -p semgrep-output
-          semgrep --config auto --include-globs-from changed.txt --output semgrep-output/report.html --json --format html || true
+          xargs semgrep scan --config auto --json > semgrep-output/report.json < changed.txt || true
+
+      - name: Convert Semgrep JSON to HTML (basic)
+        if: success() && hashFiles('semgrep-output/report.json') != ''
+        run: |
+          mkdir -p semgrep-output
+          echo "<html><body><h1>Semgrep Results</h1><pre>" > semgrep-output/report.html
+          cat semgrep-output/report.json | jq '.' >> semgrep-output/report.html
+          echo "</pre></body></html>" >> semgrep-output/report.html
 
       - name: Upload Semgrep report
         uses: actions/upload-artifact@v4
         with:
           name: semgrep-report
-          path: semgrep-report.html
+          path: semgrep-output/report.html
 
   github-pages:
     if: github.event_name == 'push' || github.event_name == 'workflow_run'
@@ -371,7 +390,7 @@ jobs:
       - name: Copy Semgrep scan to gh-pages
         run: |
           mkdir -p gh-pages/scan
-          cp semgrep-report.html gh-pages/scan/index.html
+          cp semgrep-output/report.html gh-pages/scan/index.html
 
       - name: Push static file to static branch
         run: |
