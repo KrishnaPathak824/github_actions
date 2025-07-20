@@ -301,7 +301,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: semgrep-report
-          path: semgrep-output/report.html
+          path: semgrep-report.html
 
   github-pages:
     if: github.event_name == 'push' || github.event_name == 'workflow_run'
@@ -371,7 +371,7 @@ jobs:
       - name: Copy Semgrep scan to gh-pages
         run: |
           mkdir -p gh-pages/scan
-          cp semgrep-output/report.html gh-pages/scan/index.html
+          cp semgrep-report.html gh-pages/scan/index.html
 
       - name: Push static file to static branch
         run: |
