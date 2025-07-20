@@ -14,6 +14,4 @@ WORKDIR /backend2
 COPY --from=base /backend2/node_modules ./node_modules
 COPY . .
 
-CMD ["sh", "./yarn.sh"]
-
-
+CMD ["yarn", "start"]
