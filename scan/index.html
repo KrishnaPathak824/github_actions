@@ -65,12 +65,12 @@
       },
       "end": {
         "line": 17,
-        "col": 24,
-        "offset": 287
+        "col": 22,
+        "offset": 285
       },
       "extra": {
         "message": "By not specifying a USER, a program in the container may run as 'root'. This is a security hazard. If an attacker can control a process running as root, they may have control over the container. Ensure that the last USER in a Dockerfile is a USER other than 'root'.",
-        "fix": "USER non-root\nCMD [\"sh\", \"./yarn.sh\"]",
+        "fix": "USER non-root\nCMD [\"yarn\", \"start\"]",
         "metadata": {
           "cwe": [
             "CWE-250: Execution with Unnecessary Privileges"
@@ -162,12 +162,12 @@
       },
       "end": {
         "line": 17,
-        "col": 24,
-        "offset": 287
+        "col": 22,
+        "offset": 285
       },
       "extra": {
         "message": "By not specifying a USER, a program in the container may run as 'root'. This is a security hazard. If an attacker can control a process running as root, they may have control over the container. Ensure that the last USER in a Dockerfile is a USER other than 'root'.",
-        "fix": "USER non-root\nCMD [\"sh\", \"./yarn.sh\"]",
+        "fix": "USER non-root\nCMD [\"yarn\", \"start\"]",
         "metadata": {
           "cwe": [
             "CWE-250: Execution with Unnecessary Privileges"
@@ -356,67 +356,9 @@
     {
       "code": 3,
       "level": "warn",
-      "type": [
-        "PartialParsing",
-        [
-          {
-            "path": ".github/workflows/pr-check.yaml",
-            "start": {
-              "line": 35,
-              "col": 39,
-              "offset": 745
-            },
-            "end": {
-              "line": 35,
-              "col": 56,
-              "offset": 762
-            }
-          },
-          {
-            "path": ".github/workflows/pr-check.yaml",
-            "start": {
-              "line": 35,
-              "col": 65,
-              "offset": 745
-            },
-            "end": {
-              "line": 35,
-              "col": 82,
-              "offset": 762
-            }
-          }
-        ]
-      ],
-      "message": "Syntax error at line .github/workflows/pr-check.yaml:35:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `{ github.head_ref` was unexpected",
-      "path": ".github/workflows/pr-check.yaml",
-      "spans": [
-        {
-          "file": ".github/workflows/pr-check.yaml",
-          "start": {
-            "line": 35,
-            "col": 39,
-            "offset": 745
-          },
-          "end": {
-            "line": 35,
-            "col": 56,
-            "offset": 762
-          }
-        },
-        {
-          "file": ".github/workflows/pr-check.yaml",
-          "start": {
-            "line": 35,
-            "col": 65,
-            "offset": 745
-          },
-          "end": {
-            "line": 35,
-            "col": 82,
-            "offset": 762
-          }
-        }
-      ]
+      "type": "Syntax error",
+      "message": "Syntax error at line semgrep-output/report.json:1:\n missing element",
+      "path": "semgrep-output/report.json"
     },
     {
       "code": 3,
@@ -720,9 +662,67 @@
     {
       "code": 3,
       "level": "warn",
-      "type": "Syntax error",
-      "message": "Syntax error at line semgrep-output/report.json:1:\n missing element",
-      "path": "semgrep-output/report.json"
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": ".github/workflows/pr-check.yaml",
+            "start": {
+              "line": 35,
+              "col": 39,
+              "offset": 745
+            },
+            "end": {
+              "line": 35,
+              "col": 56,
+              "offset": 762
+            }
+          },
+          {
+            "path": ".github/workflows/pr-check.yaml",
+            "start": {
+              "line": 35,
+              "col": 65,
+              "offset": 745
+            },
+            "end": {
+              "line": 35,
+              "col": 82,
+              "offset": 762
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line .github/workflows/pr-check.yaml:35:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `{ github.head_ref` was unexpected",
+      "path": ".github/workflows/pr-check.yaml",
+      "spans": [
+        {
+          "file": ".github/workflows/pr-check.yaml",
+          "start": {
+            "line": 35,
+            "col": 39,
+            "offset": 745
+          },
+          "end": {
+            "line": 35,
+            "col": 56,
+            "offset": 762
+          }
+        },
+        {
+          "file": ".github/workflows/pr-check.yaml",
+          "start": {
+            "line": 35,
+            "col": 65,
+            "offset": 745
+          },
+          "end": {
+            "line": 35,
+            "col": 82,
+            "offset": 762
+          }
+        }
+      ]
     }
   ],
   "paths": {
@@ -845,24 +845,24 @@
   },
   "time": {
     "rules": [],
-    "rules_parse_time": 1.3640029430389404,
+    "rules_parse_time": 1.404552936553955,
     "profiling_times": {
-      "config_time": 5.155203819274902,
-      "core_time": 4.999372720718384,
-      "ignores_time": 0.001596689224243164,
-      "total_time": 10.15674877166748
+      "config_time": 5.394876480102539,
+      "core_time": 5.408137321472168,
+      "ignores_time": 0.002195596694946289,
+      "total_time": 10.805898666381836
     },
     "parsing_time": {
-      "total_time": 0.17559599876403809,
+      "total_time": 0.19568538665771484,
       "per_file_time": {
-        "mean": 0.0023104736679478697,
-        "std_dev": 0.000028915508814963778
+        "mean": 0.0025748077191804584,
+        "std_dev": 0.00003131882940679865
       },
       "very_slow_files": []
     },
     "targets": [],
     "total_bytes": 0,
-    "max_memory_bytes": 1085045376
+    "max_memory_bytes": 1087023296
   },
   "skipped_rules": []
 }
