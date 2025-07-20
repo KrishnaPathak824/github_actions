@@ -1,3 +1,10 @@
+# [4.34.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.33.0...v4.34.0) (2025-07-20)
+
+
+### Features
+
+* API changed ([ee6c6dc](https://github.com/KrishnaPathak824/github_actions/commit/ee6c6dc5d04189b6da8b7f0003a634cd6e7b696f))
+
 # [4.33.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.32.0...v4.33.0) (2025-07-20)
 
 
