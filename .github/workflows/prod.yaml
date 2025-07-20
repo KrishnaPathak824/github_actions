@@ -383,7 +383,7 @@ jobs:
       - name: Copy Semgrep scan to gh-pages
         run: |
           mkdir -p gh-pages/scan
-          cp semgrep-output/report.html gh-pages/scan/index.html
+          cp report.html gh-pages/scan/index.html
 
       - name: Push static file to static branch
         run: |
