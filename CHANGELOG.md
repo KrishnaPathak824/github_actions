@@ -1,3 +1,10 @@
+# [4.32.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.31.0...v4.32.0) (2025-07-20)
+
+
+### Features
+
+* Added Semgrep report in CI and Change in Frontend ([6e8d7d3](https://github.com/KrishnaPathak824/github_actions/commit/6e8d7d3ed5962bd2d3c7c503c24a5466163b9359))
+
 # [4.31.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.30.0...v4.31.0) (2025-07-20)
 
 
