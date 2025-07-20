@@ -22,10 +22,10 @@ interface BlogComment {
 }
 
 // BLOG API (localhost:3001)
-const BLOG_API = `${APP_URL}/api/blogs`;
-const COMMENTS_API = `${APP_URL}/api/comments`;
+const BLOG_API = `${APP_URL}:3001/api/blogs`;
+const COMMENTS_API = `${APP_URL}:3001/api/comments`;
 // USER API (localhost:3000)
-const USER_API = `${APP_URL}/api/users`;
+const USER_API = `${APP_URL}:3000/api/users`;
 
 export function useBlog(id?: string) {
   const [blog, setBlog] = useState<Blog | null>(null);

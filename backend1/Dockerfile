@@ -1,32 +1,42 @@
-#Backend
+# Use Alpine base image
+FROM alpine:3.22
 
-#-----BASE-----#
-FROM node:18-alpine as base
+# Set environment variables
+ENV NODE_VERSION=22.17.0 \
+    YARN_VERSION=1.22.22
 
-WORKDIR /backend1
+# Install dependencies and Node.js
+RUN apk add --no-cache curl bash python3 make g++ \
+ && curl -fsSL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz | tar -xJf - -C /usr/local --strip-components=1 \
+ && npm install -g yarn@$YARN_VERSION
 
-COPY package.json yarn.lock ./
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-RUN yarn install --frozen-lockfile
+# Set entrypoint
+ENTRYPOINT ["docker-entrypoint.sh"]
 
-#----BUILD------#
-FROM node:18-alpine AS build
+# Default command
+CMD ["node"]
 
-WORKDIR /backend1
+# Set working directory
+WORKDIR /App
 
-COPY --from=base /backend1/node_modules ./node_modules
+# Copy dependency files
+COPY package*.json ./
 
+# Install Node.js dependencies
+RUN yarn install
+
+# Copy app source code
 COPY . .
 
-CMD ["sh", "./yarn.sh"] 
+# Install any extra dependencies needed
+RUN apk add --no-cache libc6-compat
 
-# # ----- FINAL STAGE: Slim runtime image -----
+# Expose port
+EXPOSE 3000
 
-# FROM node:18-alpine AS production
-
-# WORKDIR /backend1
-
-# RUN rm -rf yarn.sh Dockerfile .dockerignores
-
-# CMD ["sh","yarn.sh"]
-
+# Run app
+CMD ["yarn", "start"]
