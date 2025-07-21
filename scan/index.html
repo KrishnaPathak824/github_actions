@@ -360,71 +360,6 @@
         "PartialParsing",
         [
           {
-            "path": ".github/workflows/pr-check.yaml",
-            "start": {
-              "line": 35,
-              "col": 39,
-              "offset": 745
-            },
-            "end": {
-              "line": 35,
-              "col": 56,
-              "offset": 762
-            }
-          },
-          {
-            "path": ".github/workflows/pr-check.yaml",
-            "start": {
-              "line": 35,
-              "col": 65,
-              "offset": 745
-            },
-            "end": {
-              "line": 35,
-              "col": 82,
-              "offset": 762
-            }
-          }
-        ]
-      ],
-      "message": "Syntax error at line .github/workflows/pr-check.yaml:35:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `{ github.head_ref` was unexpected",
-      "path": ".github/workflows/pr-check.yaml",
-      "spans": [
-        {
-          "file": ".github/workflows/pr-check.yaml",
-          "start": {
-            "line": 35,
-            "col": 39,
-            "offset": 745
-          },
-          "end": {
-            "line": 35,
-            "col": 56,
-            "offset": 762
-          }
-        },
-        {
-          "file": ".github/workflows/pr-check.yaml",
-          "start": {
-            "line": 35,
-            "col": 65,
-            "offset": 745
-          },
-          "end": {
-            "line": 35,
-            "col": 82,
-            "offset": 762
-          }
-        }
-      ]
-    },
-    {
-      "code": 3,
-      "level": "warn",
-      "type": [
-        "PartialParsing",
-        [
-          {
             "path": ".github/workflows/prod.yaml",
             "start": {
               "line": 77,
@@ -723,6 +658,71 @@
       "type": "Syntax error",
       "message": "Syntax error at line semgrep-output/report.json:1:\n missing element",
       "path": "semgrep-output/report.json"
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": ".github/workflows/pr-check.yaml",
+            "start": {
+              "line": 35,
+              "col": 39,
+              "offset": 745
+            },
+            "end": {
+              "line": 35,
+              "col": 56,
+              "offset": 762
+            }
+          },
+          {
+            "path": ".github/workflows/pr-check.yaml",
+            "start": {
+              "line": 35,
+              "col": 65,
+              "offset": 745
+            },
+            "end": {
+              "line": 35,
+              "col": 82,
+              "offset": 762
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line .github/workflows/pr-check.yaml:35:\n When parsing a snippet as Bash for metavariable-pattern in rule 'yaml.github-actions.security.curl-eval.curl-eval', `{ github.head_ref` was unexpected",
+      "path": ".github/workflows/pr-check.yaml",
+      "spans": [
+        {
+          "file": ".github/workflows/pr-check.yaml",
+          "start": {
+            "line": 35,
+            "col": 39,
+            "offset": 745
+          },
+          "end": {
+            "line": 35,
+            "col": 56,
+            "offset": 762
+          }
+        },
+        {
+          "file": ".github/workflows/pr-check.yaml",
+          "start": {
+            "line": 35,
+            "col": 65,
+            "offset": 745
+          },
+          "end": {
+            "line": 35,
+            "col": 82,
+            "offset": 762
+          }
+        }
+      ]
     }
   ],
   "paths": {
@@ -846,24 +846,24 @@
   },
   "time": {
     "rules": [],
-    "rules_parse_time": 1.3657751083374023,
+    "rules_parse_time": 1.3543689250946045,
     "profiling_times": {
-      "config_time": 5.11384391784668,
-      "core_time": 5.000004529953003,
-      "ignores_time": 0.0016829967498779297,
-      "total_time": 10.116142511367798
+      "config_time": 5.343627691268921,
+      "core_time": 5.021442174911499,
+      "ignores_time": 0.0015575885772705078,
+      "total_time": 10.36720895767212
     },
     "parsing_time": {
-      "total_time": 0.17565011978149414,
+      "total_time": 0.1793229579925537,
       "per_file_time": {
-        "mean": 0.0023111857865986073,
-        "std_dev": 0.00002895181882223675
+        "mean": 0.0023595126051651804,
+        "std_dev": 0.000029012027172217387
       },
       "very_slow_files": []
     },
     "targets": [],
     "total_bytes": 0,
-    "max_memory_bytes": 1085190784
+    "max_memory_bytes": 1089280448
   },
   "skipped_rules": []
 }
