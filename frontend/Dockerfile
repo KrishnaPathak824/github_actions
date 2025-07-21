@@ -1,36 +1,23 @@
-#-----BASE------#
+from node:20 as BUILD
 
-FROM node:18-alpine AS base
-
-WORKDIR /frontend
-
-COPY package.json yarn.lock ./
-
-RUN yarn install --frozen-lockfile
-
-
-#----BUILD------#
-
-FROM node:18-alpine AS build
-
-WORKDIR /frontend
-
-COPY --from=base /frontend/node_modules ./node_modules
+WORKDIR /App
 
 COPY . .
 
+RUN yarn install 
+
 RUN yarn build
 
-#----PRODUCTION----#
-FROM nginx:alpine
 
-RUN rm -rf /usr/share/nginx/html/*
+from nginx:1.27.5-alpine as PROD
 
-COPY --from=build /frontend/dist /usr/share/nginx/html
+COPY --from=BUILD /App/dist /var/www/html/
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=BUILD /App/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
-CMD ["nginx","-g","daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
+
+
 
