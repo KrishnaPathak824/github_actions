@@ -1,3 +1,10 @@
+# [4.38.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.37.0...v4.38.0) (2025-07-21)
+
+
+### Features
+
+* nginx configuration ([196f609](https://github.com/KrishnaPathak824/github_actions/commit/196f609c7c5a0cafc09dd7d987442f27b99b435b))
+
 # [4.37.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.36.0...v4.37.0) (2025-07-21)
 
 
