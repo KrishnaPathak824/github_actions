@@ -1,17 +1,14 @@
-#-----BASE-----#
-FROM node:18-alpine AS base
+FROM node:22-alpine as prod
 
-WORKDIR /backend2
+WORKDIR /App
 
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+COPY package*.json ./
+RUN yarn install
 
-#----BUILD------#
-FROM node:18-alpine AS build
-
-WORKDIR /backend2
-
-COPY --from=base /backend2/node_modules ./node_modules
 COPY . .
 
-CMD ["yarn", "start"]
+
+RUN apk add --no-cache curl
+EXPOSE 3000
+
+CMD ["yarn","start"]
