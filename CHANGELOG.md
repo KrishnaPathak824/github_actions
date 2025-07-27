@@ -1,3 +1,10 @@
+# [4.42.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.41.0...v4.42.0) (2025-07-27)
+
+
+### Features
+
+* Change in Dockerfile ([cfd1ccf](https://github.com/KrishnaPathak824/github_actions/commit/cfd1ccfd4fb63607172259d7bf9e6c34bf4a8dd2))
+
 # [4.41.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.40.0...v4.41.0) (2025-07-27)
 
 
