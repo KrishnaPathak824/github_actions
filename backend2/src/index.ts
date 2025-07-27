@@ -24,6 +24,11 @@ app.use(cors(
 ));
 
 app.use(requestLogger);
+
+app.get("/health", (req, res) => {
+  res.send(`Done from ${process.env.PORT}`);
+})
+
 app.use(appRouter);
 
 app.use(notFound);
