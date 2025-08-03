@@ -11,9 +11,7 @@ RUN yarn build
 
 from nginx:1.27.5-alpine as PROD
 
-COPY --from=BUILD /App/dist /var/www/html/
-
-COPY --from=BUILD /App/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=BUILD /App/dist /usr/share/nginx/html
 
 EXPOSE 80
 
