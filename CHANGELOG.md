@@ -1,3 +1,10 @@
+# [4.44.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.43.0...v4.44.0) (2025-08-03)
+
+
+### Features
+
+* dockerfile update ([ad0a157](https://github.com/KrishnaPathak824/github_actions/commit/ad0a157c6d960e9e4d0304ffc7ade0ae946218ae))
+
 # [4.43.0](https://github.com/KrishnaPathak824/github_actions/compare/v4.42.0...v4.43.0) (2025-07-27)
 
 
