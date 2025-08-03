@@ -1,6 +1,6 @@
 <html><body><h1>Semgrep Results</h1><pre>
 {
-  "version": "1.130.0",
+  "version": "1.131.0",
   "results": [
     {
       "check_id": "yaml.github-actions.security.run-shell-injection.run-shell-injection",
@@ -253,14 +253,14 @@
       "check_id": "dockerfile.security.missing-user.missing-user",
       "path": "frontend/Dockerfile",
       "start": {
-        "line": 20,
+        "line": 18,
         "col": 1,
-        "offset": 240
+        "offset": 179
       },
       "end": {
-        "line": 20,
+        "line": 18,
         "col": 35,
-        "offset": 274
+        "offset": 213
       },
       "extra": {
         "message": "By not specifying a USER, a program in the container may run as 'root'. This is a security hazard. If an attacker can control a process running as root, they may have control over the container. Ensure that the last USER in a Dockerfile is a USER other than 'root'.",
@@ -846,18 +846,18 @@
   },
   "time": {
     "rules": [],
-    "rules_parse_time": 1.3426830768585205,
+    "rules_parse_time": 1.3876960277557373,
     "profiling_times": {
-      "config_time": 5.189892768859863,
-      "core_time": 5.181963682174683,
-      "ignores_time": 0.0015454292297363281,
-      "total_time": 10.374020099639893
+      "config_time": 5.199293613433838,
+      "core_time": 5.456721067428589,
+      "ignores_time": 0.0016167163848876953,
+      "total_time": 10.658287286758423
     },
     "parsing_time": {
-      "total_time": 0.17566418647766113,
+      "total_time": 0.20994091033935547,
       "per_file_time": {
-        "mean": 0.0023113708747060672,
-        "std_dev": 0.00002766430092806336
+        "mean": 0.002762380399202045,
+        "std_dev": 0.00003466341821166216
       },
       "very_slow_stats": {
         "time_ratio": 0.0,
@@ -866,10 +866,10 @@
       "very_slow_files": []
     },
     "scanning_time": {
-      "total_time": 1.6127443313598633,
+      "total_time": 1.8970108032226562,
       "per_file_time": {
-        "mean": 0.00521923731831671,
-        "std_dev": 0.000812682995707333
+        "mean": 0.0061391935379374,
+        "std_dev": 0.0010386749259469234
       },
       "very_slow_stats": {
         "time_ratio": 0.0,
@@ -878,10 +878,10 @@
       "very_slow_files": []
     },
     "matching_time": {
-      "total_time": 0.5986089706420898,
+      "total_time": 0.6941215991973877,
       "per_file_and_rule_time": {
-        "mean": 0.00128181792428713,
-        "std_dev": 0.000015492454152922737
+        "mean": 0.0014863417541699953,
+        "std_dev": 0.000020115188502182908
       },
       "very_slow_stats": {
         "time_ratio": 0.0,
@@ -890,10 +890,10 @@
       "very_slow_rules_on_files": []
     },
     "tainting_time": {
-      "total_time": 0.14323139190673828,
+      "total_time": 0.17270398139953613,
       "per_def_and_rule_time": {
-        "mean": 0.0014181325931360224,
-        "std_dev": 0.000005431705753388879
+        "mean": 0.0017099404098963973,
+        "std_dev": 0.000008098324427135082
       },
       "very_slow_stats": {
         "time_ratio": 0.0,
@@ -903,7 +903,7 @@
     },
     "targets": [],
     "total_bytes": 0,
-    "max_memory_bytes": 1087830656
+    "max_memory_bytes": 1090239168
   },
   "engine_requested": "OSS",
   "skipped_rules": []
